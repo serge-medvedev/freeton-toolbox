@@ -4,7 +4,7 @@ set -e
 
 SCRIPT_DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)
 . "${SCRIPT_DIR}/env.sh"
-TON_WORK_BACKUP_DIR=/tmp/ton.backup/work
+TON_WORK_BACKUP_DIR=/var/ton.backup/work
 
 prep_term() {
     unset VALIDATOR_PID
