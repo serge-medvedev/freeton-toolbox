@@ -12,12 +12,12 @@ The main idea is to use trusted mail server as a message broker to send notifica
 ## Disclaimer
 All you'll see below works well for me on the __TESTNET__. I didn't test it on the MAINNET.
 
-Details of installation and setup of tools mentioned below, i.e. Docker, Docker Compose, cron, msmtp and imapfilter are out of scope of this guide, though Toolbox provides you with sample config files which require minimal modifications to get job done.
+Details of installation and setup of tools mentioned below, i.e. Docker, Docker Compose, cron, msmtp and imapfilter are out of scope of this guide, though Toolbox provides you with sample config files which require minimal modifications to get the job done.
 
 ## Validator setup
 We'll be running validator node in a Docker container so you'll need __Docker__ and __Docker Compose__ installed.
 Validator script is required to be run periodically so we'll need some kind of __cron__ (e.g. cronie or fcron).
-To send email notifications we'll use __msmtp__ utility (see the [configuration file sample](validator/msmtprc)).
+To send email notifications we'll use __msmtp__ utility (see the [configuration file sample](validator/msmtp/msmtprc)).
 Also we'll need __git__ to clone this repo :)
 
 1. Start by adding yourself to the `docker` group to be able to run `docker` and `docker-commpose` commands without `sudo`
@@ -61,7 +61,8 @@ Also we'll need __git__ to clone this repo :)
 
 5. When the validator node is synced, import the crontab to periodically run the validator script
     ```bash
-    # IMPORTANT: before you continue, change the fake email address with a valid recipient's one in the crontab file!
+    ### IMPORTANT: before you continue, change the fake email address with a valid recipient's one in the crontab file!
+    ### Also, you may want to change the stake amount which is specified there, too.
     $ crontab /opt/freeton-toolbox/validator/crontab
     ```
 
@@ -73,7 +74,9 @@ This one is much simpler. We'll have to run a periodic [cron job](operator/cront
 
 1. Repeat steps 1, 2 and 3 of the previous section
 
-2. Build the `tonos-cli` image:
+2. Put custodian keys in the file `/opt/freeton-toolbox/.secrets/deploy.keys.json`
+
+3. Build the `tonos-cli` image:
     ```bash
     $ cd /opt/freeton-toolbox/tonos-cli
     ### Build the image.
@@ -86,7 +89,7 @@ This one is much simpler. We'll have to run a periodic [cron job](operator/cront
 
     Note the presense of config files ([one](tonos-cli/tonlabs-cli.conf-dev.json), [two](tonos-cli/tonlabs-cli.conf.json)) which are being used to store default values keeping your commands nice and clear.
 
-5. Import the crontab to periodically run __imapfilter__ to check email notifications
+4. Import the crontab to periodically run __imapfilter__ to check email notifications
     ```bash
     $ crontab /opt/freeton-toolbox/operator/crontab
     ```
