@@ -6,7 +6,7 @@ services:
     volumes:
       - type: bind
         source: ./dev/.runtime/ton-keys
-        target: /root/ton-keys
+        target: /home/freeton/ton-keys
       - type: tmpfs
         target: /var/ton
       - type: bind
