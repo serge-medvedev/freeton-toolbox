@@ -1,0 +1,5 @@
+Place this file where msmtprc utility will look for it:
+
+$ cp msmtprc ~/.msmtprc
+
+Edit ~/.msmtprc, replacing fake data with your own valid one.

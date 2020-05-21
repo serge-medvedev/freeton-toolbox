@@ -1,0 +1,19 @@
+version: "2.4"
+services:
+  freeton-validator-dev:
+    image: freeton-validator:dev
+    build: ./dev
+    volumes:
+      - type: bind
+        source: ./dev/.runtime/ton-keys
+        target: /root/ton-keys
+      - type: tmpfs
+        target: /var/ton
+      - type: bind
+        source: ./dev/.runtime/ton.backup
+        target: /var/ton.backup
+    ports:
+      - "30303:30303/udp"
+    hostname: tatzelwurm-dev.online
+    restart: always
+

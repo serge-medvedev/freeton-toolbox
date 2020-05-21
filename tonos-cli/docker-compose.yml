@@ -1,0 +1,19 @@
+version: "2.3"
+services:
+    tonos-cli-dev:
+        image: tonos-cli
+        build: .
+        volumes:
+            - type: bind
+              source: ./tonlabs-cli.conf-dev.json
+              target: /opt/tonos-cli/tonlabs-cli.conf.json
+              read_only: true
+
+    tonos-cli:
+        image: tonos-cli
+        build: .
+        volumes:
+            - type: bind
+              source: ./tonlabs-cli.conf.json
+              target: /opt/tonos-cli/tonlabs-cli.conf.json
+              read_only: true

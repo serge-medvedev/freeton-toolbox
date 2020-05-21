@@ -1,0 +1,1 @@
+*/4 * * * * imapfilter >> /var/log/freeton-toolbox/imapfilter.log 2>&1

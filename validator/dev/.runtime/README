@@ -1,0 +1,2 @@
+This is the default location of validator (dev) data.
+You're free to move it somewhere else but don't forget to edit the docker-compose.yml.

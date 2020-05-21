@@ -1,0 +1,5 @@
+Place this file where imapfilter utility will look for it:
+
+$ mkdir -p ~/.imapfilter && cp config.lua ~/.imapfilter/config.lua
+
+Edit ~/.imapfilter/config.lua, following the TODOs inside.
