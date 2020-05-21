@@ -6,7 +6,7 @@
 #     <comma-separated list of mail recipients>
 #
 
-COMPOSE_FILE="/home/sm/docker/freeton-validator-engine/docker-compose.yml"
+COMPOSE_FILE="/opt/freeton-toolbox/validator/docker-compose.yml"
 RECIPIENTS="$1"
 STAKE=${2:-10001}
 OUTPUT="$(docker-compose -f "$COMPOSE_FILE" exec -T freeton-validator-dev bash -eE ./validator_msig.sh $STAKE)"
