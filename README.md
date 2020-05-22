@@ -23,6 +23,7 @@ Also we'll need __git__ to clone this repo :)
 1. Start by adding yourself to the `docker` group to be able to run `docker` and `docker-commpose` commands without `sudo`
     ```bash
     $ sudo usermod -aG docker <your user id>
+    $ su - <your user id>
     ```
 
 2. Get the Toolbox
