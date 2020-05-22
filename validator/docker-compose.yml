@@ -17,3 +17,11 @@ services:
     hostname: tatzelwurm-dev.online
     restart: always
 
+  msmtp:
+    image: msmtp
+    build: ./msmtp
+    volumes:
+      - type: bind
+        source: ./msmtp/msmtprc
+        target: /etc/msmtprc
+        read_only: true
