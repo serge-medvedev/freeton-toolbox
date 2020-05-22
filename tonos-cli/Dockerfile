@@ -12,4 +12,3 @@ RUN ln -sf ton-labs-contracts/solidity/safemultisig/SafeMultisigWallet.abi.json 
     && ln -sf ton-labs-contracts/solidity/safemultisig/SafeMultisigWallet.tvc .
 
 ENTRYPOINT ["tonos-cli"]
-
