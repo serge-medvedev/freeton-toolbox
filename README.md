@@ -17,7 +17,7 @@ Details of installation and setup of tools mentioned below, i.e. Docker, Docker 
 ## Validator setup
 We'll be running validator node in a Docker container so you'll need __Docker__ and __Docker Compose__ installed.
 Validator script is required to be run periodically so we'll need some kind of __cron__ (e.g. cronie or fcron).
-To send email notifications we'll use __msmtp__ utility (see the [configuration file sample](validator/msmtp/msmtprc)).
+To send email notifications we'll use dockerized version of __msmtp__ utility provided by the Toolbox.
 Also we'll need __git__ to clone this repo :)
 
 1. Start by adding yourself to the `docker` group to be able to run `docker` and `docker-commpose` commands without `sudo`
@@ -50,16 +50,21 @@ Also we'll need __git__ to clone this repo :)
 
     ```bash
     $ cd /opt/freeton-toolbox/validator
-    $ docker-compose build --build-arg EXTERNAL_UID=$(id -u) --build-arg EXTERNAL_GID=$(id -g)
+    $ docker-compose build --build-arg EXTERNAL_UID=$(id -u) --build-arg EXTERNAL_GID=$(id -g) freeton-validator-dev
     ### Run the validator container:
-    $ docker-compose up -d
+    $ docker-compose up -d freeton-validator-dev
     ### Let the validator start syncing and after a while you'll be able to see its status by doing this:
     $ docker-compose exec freeton-validator-dev ./check_node_sync_status.sh
     ### Validator logs may be monitored with another one (press Ctrl+C to exit):
     $ docker-compose logs --tail 500 --follow freeton-validator-dev
     ```
 
-5. When the validator node is synced, import the crontab to periodically run the validator script
+5. Modify __msmtp__ [config file](validator/msmtp/msmtprc) by replacing dummy values with real ones and build the image
+    ```bash
+    $ docker-compose build msmtp
+    ```
+
+6. When the validator node is synced, import the crontab to periodically run the validator script
     ```bash
     ### IMPORTANT: before you continue, change the fake email address with a valid recipient's one in the crontab file!
     ### Also, you may want to change the stake amount which is specified there, too.
