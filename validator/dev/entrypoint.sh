@@ -55,5 +55,7 @@ prep_term
 
 wait_term
 
+echo "validator-engine exited with code $?"
+
 rm -fr "${TON_WORK_BACKUP_DIR}"
-cp -a "${TON_WORK_DIR}" "$(dirname "${TON_WORK_BACKUP_DIR}")"
+rsync -au "${TON_WORK_DIR}" "$(dirname "${TON_WORK_BACKUP_DIR}")"

@@ -8,7 +8,7 @@ ENV TARGET_REPO=$TARGET_REPO
 ENV TOP_DIR /opt/$TARGET_REPO
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    sudo ca-certificates git curl \
+    sudo ca-certificates git curl rsync \
     && rm -fr /var/lib/apt/lists/* \
     && mkdir -p "$TOP_DIR" \
     && git clone "https://github.com/tonlabs/$TARGET_REPO.git" "$TOP_DIR" \
