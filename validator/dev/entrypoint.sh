@@ -33,7 +33,8 @@ wait_term() {
 
 if ! [ -d "${TON_WORK_DIR}/db" ]; then
     if [ -d "${TON_WORK_BACKUP_DIR}" ]; then
-        cp -a "${TON_WORK_BACKUP_DIR}" "$(dirname "${TON_WORK_DIR}")"
+        sudo cp -a "${TON_WORK_BACKUP_DIR}" "$(dirname "${TON_WORK_DIR}")"
+        sudo chown -R freeton:freeton "${TON_WORK_DIR}"
     else
         echo "INFO: setup TON node..."
 
