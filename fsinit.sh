@@ -11,7 +11,9 @@ fi
 ### This creates the folder structure required.
 mkdir -p \
 	/opt/freeton-toolbox \
-	/var/log/freeton-toolbox
+	/var/log/freeton-toolbox \
+	/var/lib/influxdb \
+	/var/lib/chronograf
 
 git clone https://github.com/serge-medvedev/freeton-toolbox.git /opt/freeton-toolbox
 
