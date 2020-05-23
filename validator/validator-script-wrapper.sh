@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #
-# Usage: elections-notifier.sh \
+# Usage: validator-script-wrapper.sh \
 #     <stake size in tokens> \
 #     <comma-separated list of mail recipients>
 #
