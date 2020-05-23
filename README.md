@@ -20,30 +20,13 @@ Validator script is required to be run periodically so we'll need some kind of _
 To send email notifications we'll use dockerized version of __msmtp__ utility provided by the Toolbox.
 Also we'll need __git__ to clone this repo :)
 
-1. Start by adding yourself to the `docker` group to be able to run `docker` and `docker-commpose` commands without `sudo`
+1. Run the folder structure initialization script
     ```bash
-    $ sudo usermod -aG docker <your user id>
-    $ su - <your user id>
+    $ export FSINIT_URL=https://raw.githubusercontent.com/serge-medvedev/freeton-toolbox/master/fsinit.sh
+    $ curl -s "$FSINIT_URL" | sudo bash -s $(id -u) $(id -g)
     ```
 
-2. Get the Toolbox
-    ```bash
-    ### Create a home for the Toolbox. This requires root priviledges.
-    $ sudo mkdir /opt/freeton-toolbox
-    ### Change the owner of that directory to your non-root user:
-    $ sudo chown <your user id>:<your primary group id> /opt/freeton-toolbox
-    ### Clone the repo to /opt/freeton-toolbox directory:
-    $ git clone https://github.com/serge-medvedev/freeton-toolbox.git /opt/freeton-toolbox
-    ```
-
-3. Create a dedicated directory for the [cron job](validator/crontab) logs
-    ```bash
-    $ sudo mkdir -p /var/log/freeton-toolbox
-    ### Change the owner of that directory to your non-root user since the cron job will run without root priviledges:
-    $ sudo chown <your user id>:<your primary group id> /var/log/freeton-toolbox
-    ```
-
-4. Build the image and run the container
+2. Build the image and run the container
 
     For the fastest syncing with the network we'll use `tmpfs` bind mount to store the DB and regular disk volume to store the backup. It means that validator machine must have enough RAM, swap and disk space to contain the FreeTON DB.
     
@@ -51,6 +34,8 @@ Also we'll need __git__ to clone this repo :)
 
     ```bash
     $ cd /opt/freeton-toolbox/validator
+    ### By default docker-compose command requires sudo. Add yourself to the 'docker' group to change it:
+    ### sudo usermod -aG docker $(id -un) && su - $(id -un)
     $ docker-compose build --build-arg EXTERNAL_UID=$(id -u) --build-arg EXTERNAL_GID=$(id -g) freeton-validator-dev
     ### Run the validator container:
     $ docker-compose up -d freeton-validator-dev
@@ -60,12 +45,12 @@ Also we'll need __git__ to clone this repo :)
     $ docker-compose logs --tail 500 --follow freeton-validator-dev
     ```
 
-5. Modify __msmtp__ [config file](validator/msmtp/msmtprc) by replacing dummy values with real ones and build the image
+3. Modify __msmtp__ [config file](validator/msmtp/msmtprc) by replacing dummy values with real ones and build the image
     ```bash
     $ docker-compose build msmtp
     ```
 
-6. When the validator node is synced, import the crontab to periodically run the validator script
+4. When the validator node is synced, import the crontab to periodically run the validator script
     ```bash
     ### IMPORTANT: before you continue, change the fake email address with a valid recipient's one in the crontab file!
     ### Also, you may want to change the stake amount which is specified there, too.
@@ -78,9 +63,9 @@ That's it! Your validator node is all set.
 
 This one is much simpler. We'll have to run a periodic [cron job](operator/crontab) to get email notifications sent by the Validator and confirm those transactions locally. To do this we'll be using __imapfilter__ utility (see the [configuration file sample](operator/imapfilter/config.lua)) for dealing with emails and dockerized version of `tonos-cli` utility for dealing with transactions.
 
-1. Repeat steps 1, 2 and 3 of the previous section
+1. Repeat step 1 of the previous section
 
-2. Put custodian keys in the file `/opt/freeton-toolbox/.secrets/deploy.keys.json`
+2. Put the custodian keys in `/opt/freeton-toolbox/.secrets/deploy.keys.json`
 
 3. Build the `tonos-cli` image:
     ```bash
