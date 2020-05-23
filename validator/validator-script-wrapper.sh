@@ -22,4 +22,3 @@ if [ ! -z "$(echo "$OUTPUT" | awk '/"transId": "0x([[:xdigit:]]+)"/')" ]; then
     printf "To: Dear FreeTON Validator\nSubject: Transaction Confirmation Request\n\nThe latest validator script run output:\n\n%s\n" "$OUTPUT" | \
         docker-compose -f "$COMPOSE_FILE" run -T --rm msmtp -a default "$RECIPIENTS"
 fi
-

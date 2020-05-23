@@ -25,3 +25,53 @@ services:
         source: ./msmtp/msmtprc
         target: /etc/msmtprc
         read_only: true
+
+  influxdb:
+    image: influxdb:1.8
+    volumes:
+      - type: bind
+        source: ./tick/influxdb.conf
+        target: /etc/influxdb/influxdb.conf
+        read_only: true
+    volumes:
+      - type: bind
+        source: /var/lib/influxdb
+        target: /var/lib/influxdb
+    environment:
+      - INFLUXDB_CONFIG_PATH=/etc/influxdb/influxdb.conf
+    ports:
+      - "8086:8086"
+    restart: always
+
+  telegraf:
+    image: telegraf
+    hostname: telegraf
+    volumes:
+      - type: bind
+        source: ./tick/telegraf.conf
+        target: /etc/telegraf/telegraf.conf
+        read_only: true
+      - type: bind
+        source: /proc
+        target: /host/proc
+        read_only: true
+      - type: bind
+        source: /var/run/docker.sock
+        target: /var/run/docker.sock
+        read_only: true
+    environment:
+      - HOST_PROC=/host/proc
+    network_mode: host # for network interface(s) monitoring
+    restart: always
+
+  chronograf:
+    image: chronograf
+    volumes:
+      - type: bind
+        source: /var/lib/chronograf
+        target: /var/lib/chronograf
+    environment:
+      - INFLUXDB_URL=http://influxdb:8086
+    ports:
+      - "8888:8888"
+    restart: always

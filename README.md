@@ -5,6 +5,7 @@
 This toolbox allows you to:
 - have a validator node up & running in no time (almost)
 - automatically participate in validators elections (confirming multisig transactions)
+- monitor your setup via beautiful dashboard based on TICK stack
 
 ## Approach
 The main idea is to use trusted mail server as a message broker to send notifications from the Validator to the Operator &ndash; separate entity which confirms transactions with its custodian key pair. There may be more than one Operator.
@@ -50,12 +51,19 @@ Also we'll need __git__ to clone this repo :)
     $ docker-compose build msmtp
     ```
 
-4. When the validator node is synced, import the crontab to periodically run the validator script
+4. When the validator node is synced, import the crontab to periodically run the validator script and other jobs
     ```bash
     ### IMPORTANT: before you continue, change the fake email address with a valid recipient's one in the crontab file!
     ### Also, you may want to change the stake amount which is specified there, too.
+    ### Remove the stats gathering job if you don't want to see such a useful information on the dashboard.
     $ crontab /opt/freeton-toolbox/validator/crontab
     ```
+
+5. Now, you might want to set up the dashboard to visualize some of the runtime metrics.
+    ```bash
+    $ docker-compose up -d influxdb telegraf chronograf
+    ```
+    Open the Chronograf in your browser by visiting `http://<your server ip>:8888`, go to the 'Dashboards' tab and add a new one by importing [the config](validator/tick/dashboard.json).
 
 That's it! Your validator node is all set.
 
@@ -91,3 +99,4 @@ That's it! Your setup is ready to automatically confirm transactions intiated by
 
 ## Roadmap
 - add Ansible Playbook(s) to automate software installation and setup operations
+- add actionable alerts
