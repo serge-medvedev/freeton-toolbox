@@ -137,19 +137,37 @@
 				"name": "TIME_DIFF",
 				"queries": [
 					{
-						"query": "SELECT - mean(\"value\") AS \"mean_value\" FROM \"telegraf\".\"autogen\".\"freeton_validator_timediff\" WHERE time > :dashboardTime: AND time < :upperDashboardTime: AND \"host\"='telegraf' GROUP BY time(:interval:) FILL(previous)",
+						"query": "SELECT mean(\"value\") AS \"mean_value\" FROM \"telegraf\".\"autogen\".\"freeton_validator_timediff\" WHERE time > :dashboardTime: AND time < :upperDashboardTime: AND \"host\"='telegraf' GROUP BY time(:interval:) FILL(previous)",
 						"queryConfig": {
-							"database": "",
-							"measurement": "",
-							"retentionPolicy": "",
-							"fields": [],
-							"tags": {},
+							"database": "telegraf",
+							"measurement": "freeton_validator_timediff",
+							"retentionPolicy": "autogen",
+							"fields": [
+								{
+									"value": "mean",
+									"type": "func",
+									"alias": "mean_value",
+									"args": [
+										{
+											"value": "value",
+											"type": "field",
+											"alias": ""
+										}
+									]
+								}
+							],
+							"tags": {
+								"host": [
+									"telegraf"
+								]
+							},
 							"groupBy": {
-								"time": "",
+								"time": "auto",
 								"tags": []
 							},
-							"areTagsAccepted": false,
-							"rawText": "SELECT - mean(\"value\") AS \"mean_value\" FROM \"telegraf\".\"autogen\".\"freeton_validator_timediff\" WHERE time > :dashboardTime: AND time < :upperDashboardTime: AND \"host\"='telegraf' GROUP BY time(:interval:) FILL(previous)",
+							"areTagsAccepted": true,
+							"fill": "previous",
+							"rawText": null,
 							"range": null,
 							"shifts": null
 						},
@@ -175,7 +193,7 @@
 							""
 						],
 						"label": "",
-						"prefix": "",
+						"prefix": "-",
 						"suffix": "",
 						"base": "10",
 						"scale": "linear"
