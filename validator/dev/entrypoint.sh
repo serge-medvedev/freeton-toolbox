@@ -35,7 +35,7 @@ if ! [ -d "${TON_WORK_DIR}/db" ]; then
     if [ -f "${TON_WORK_BACKUP_DIR}/etc/ton-global.config.json" ]; then
         echo "INFO: restoring db from backup..."
 
-        sudo cp -a "${TON_WORK_BACKUP_DIR}" "$(dirname "${TON_WORK_DIR}")"
+        sudo rsync -au "${TON_WORK_BACKUP_DIR}" "$(dirname "${TON_WORK_DIR}")"
         sudo chown -R freeton:freeton "${TON_WORK_DIR}"
     else
         rm -fr "${TON_WORK_BACKUP_DIR}"
