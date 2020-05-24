@@ -26,6 +26,7 @@ RUN groupadd -f -g $EXTERNAL_GID freeton \
     && chown -R freeton:freeton "$TOP_DIR"
 
 COPY entrypoint.sh .
+COPY getstats.sh .
 
 EXPOSE 30303/udp
 
