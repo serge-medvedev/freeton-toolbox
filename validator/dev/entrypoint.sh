@@ -32,12 +32,14 @@ wait_term() {
 }
 
 if ! [ -d "${TON_WORK_DIR}/db" ]; then
-    if [ -d "${TON_WORK_BACKUP_DIR}" ]; then
+    if [ -f "${TON_WORK_BACKUP_DIR}/etc/ton-global.config.json" ]; then
         echo "INFO: restoring db from backup..."
 
         sudo cp -a "${TON_WORK_BACKUP_DIR}" "$(dirname "${TON_WORK_DIR}")"
         sudo chown -R freeton:freeton "${TON_WORK_DIR}"
     else
+        rm -fr "${TON_WORK_BACKUP_DIR}"
+
         echo "INFO: setup TON node..."
 
         "${SCRIPT_DIR}/setup.sh" 2>&1
@@ -61,5 +63,4 @@ EXIT_CODE=$?
 
 echo "validator-engine exited with code $EXIT_CODE"
 
-rm -fr "${TON_WORK_BACKUP_DIR}"
 rsync -au "${TON_WORK_DIR}" "$(dirname "${TON_WORK_BACKUP_DIR}")"
