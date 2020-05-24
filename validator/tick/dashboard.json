@@ -20,7 +20,7 @@
 				"name": "DB Size, GB",
 				"queries": [
 					{
-						"query": "SELECT max(\"value\") / 1024 / 1024 AS \"max_value\" FROM \"telegraf\".\"autogen\".\"freeton_validator_dbsize\" WHERE time > :dashboardTime: AND time < :upperDashboardTime: AND \"host\"='telegraf' GROUP BY time(:interval:) FILL(previous)",
+						"query": "SELECT last(\"value\") / 1024 / 1024 AS \"last_value\" FROM \"telegraf\".\"autogen\".\"freeton_validator_dbsize\" WHERE time > :dashboardTime: AND time < :upperDashboardTime: AND \"host\"='telegraf' GROUP BY time(:interval:) FILL(previous)",
 						"queryConfig": {
 							"database": "",
 							"measurement": "",
@@ -32,7 +32,7 @@
 								"tags": []
 							},
 							"areTagsAccepted": false,
-							"rawText": "SELECT max(\"value\") / 1024 / 1024 AS \"max_value\" FROM \"telegraf\".\"autogen\".\"freeton_validator_dbsize\" WHERE time > :dashboardTime: AND time < :upperDashboardTime: AND \"host\"='telegraf' GROUP BY time(:interval:) FILL(previous)",
+							"rawText": "SELECT last(\"value\") / 1024 / 1024 AS \"last_value\" FROM \"telegraf\".\"autogen\".\"freeton_validator_dbsize\" WHERE time > :dashboardTime: AND time < :upperDashboardTime: AND \"host\"='telegraf' GROUP BY time(:interval:) FILL(previous)",
 							"range": null,
 							"shifts": null
 						},
@@ -78,7 +78,7 @@
 				"type": "line-plus-single-stat",
 				"colors": [
 					{
-						"id": "a40cd4eb-510c-4d46-8885-f25dbef6000d",
+						"id": "base",
 						"type": "scale",
 						"hex": "#8F8AF4",
 						"name": "Do Androids Dream of Electric Sheep?",
@@ -137,16 +137,16 @@
 				"name": "TIME_DIFF",
 				"queries": [
 					{
-						"query": "SELECT mean(\"value\") AS \"mean_value\" FROM \"telegraf\".\"autogen\".\"freeton_validator_timediff\" WHERE time > :dashboardTime: AND time < :upperDashboardTime: AND \"host\"='telegraf' GROUP BY time(:interval:) FILL(previous)",
+						"query": "SELECT max(\"value\") AS \"max_value\" FROM \"telegraf\".\"autogen\".\"freeton_validator_timediff\" WHERE time > :dashboardTime: AND time < :upperDashboardTime: AND \"host\"='telegraf' GROUP BY time(:interval:) FILL(previous)",
 						"queryConfig": {
 							"database": "telegraf",
 							"measurement": "freeton_validator_timediff",
 							"retentionPolicy": "autogen",
 							"fields": [
 								{
-									"value": "mean",
+									"value": "max",
 									"type": "func",
-									"alias": "mean_value",
+									"alias": "max_value",
 									"args": [
 										{
 											"value": "value",
@@ -648,7 +648,7 @@
 				"name": "Validator Uptime",
 				"queries": [
 					{
-						"query": "SELECT mean(\"uptime_ns\") / 1000000000 / 60 / 60 AS \"mean_uptime_hours\" FROM \"telegraf\".\"autogen\".\"docker_container_status\" WHERE time > :dashboardTime: AND time < :upperDashboardTime: AND \"com.docker.compose.service\"='freeton-validator-dev' GROUP BY time(:interval:) FILL(previous)",
+						"query": "SELECT last(\"uptime_ns\") / 1000000000 / 60 / 60 AS \"uptime_hours\" FROM \"telegraf\".\"autogen\".\"docker_container_status\" WHERE time > :dashboardTime: AND time < :upperDashboardTime: AND \"com.docker.compose.service\"='freeton-validator-dev' GROUP BY time(:interval:) FILL(previous)",
 						"queryConfig": {
 							"database": "",
 							"measurement": "",
@@ -660,7 +660,7 @@
 								"tags": []
 							},
 							"areTagsAccepted": false,
-							"rawText": "SELECT mean(\"uptime_ns\") / 1000000000 / 60 / 60 AS \"mean_uptime_hours\" FROM \"telegraf\".\"autogen\".\"docker_container_status\" WHERE time > :dashboardTime: AND time < :upperDashboardTime: AND \"com.docker.compose.service\"='freeton-validator-dev' GROUP BY time(:interval:) FILL(previous)",
+							"rawText": "SELECT last(\"uptime_ns\") / 1000000000 / 60 / 60 AS \"uptime_hours\" FROM \"telegraf\".\"autogen\".\"docker_container_status\" WHERE time > :dashboardTime: AND time < :upperDashboardTime: AND \"com.docker.compose.service\"='freeton-validator-dev' GROUP BY time(:interval:) FILL(previous)",
 							"range": null,
 							"shifts": null
 						},
