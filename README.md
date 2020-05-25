@@ -4,8 +4,11 @@
 
 This toolbox allows you to:
 - have a validator node up & running in no time (almost)
-- automatically participate in validators elections (confirming multisig transactions)
+- receive emails with transaction confirmation requests
+- automatically participate in validators elections
 - monitor your setup via beautiful dashboard based on TICK stack
+
+![dashboard view](gallery/dashboard-1.png)
 
 ## Approach
 The main idea is to use trusted mail server as a message broker to send notifications from the Validator to the Operator &ndash; separate entity which confirms transactions with its custodian key pair. There may be more than one Operator.
