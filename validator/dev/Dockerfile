@@ -20,13 +20,13 @@ WORKDIR "$TOP_DIR/scripts"
 RUN sed -i 's/TON_WORK_DIR=".*"/TON_WORK_DIR="\/var\/ton\/work"/g' env.sh \
     && sed -i 's/ADNL_PORT="30310"/ADNL_PORT="30303"/g' env.sh
 
+COPY entrypoint.sh .
+COPY getstats.sh .
+
 RUN groupadd -f -g $EXTERNAL_GID freeton \
     && useradd -MN -u $EXTERNAL_UID -g $EXTERNAL_GID -G sudo freeton \
     && echo 'freeton ALL=(ALL) NOPASSWD: ALL' > /etc/sudoers.d/freeton \
     && chown -R freeton:freeton "$TOP_DIR"
-
-COPY entrypoint.sh .
-COPY getstats.sh .
 
 EXPOSE 30303/udp
 
