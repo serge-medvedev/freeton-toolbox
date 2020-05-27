@@ -24,7 +24,7 @@ LC_OUTPUT=$($TON_BUILD_DIR/lite-client/lite-client \
     -rc "quit" 2>&1)
 ACTIVE_ELECTION_ID=$(echo "$LC_OUTPUT" | perl -ne '/^result:\s*\[\s*(\d+)\s*\]\s*$/ && print $1')
 
-if [ -z "$ACTIVE_ELECTION_ID" ]; then
+if [ "$ACTIVE_ELECTION_ID" -eq 0 ]; then
     PAST_ELECTION_ID=$(echo "$LC_OUTPUT" | perl -ne '/^result:\s*\[\s*\((\d+\s*)+\)\s*\]\s*$/ && print $1')
     PAST_ELECTION_ID_FILE="/tmp/freeton-validator-stats-$PAST_ELECTION_ID"
 
