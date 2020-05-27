@@ -48,12 +48,15 @@ if [ "$ACTIVE_ELECTION_ID" -eq 0 ]; then
         printf "TOTAL_WEIGHT=%s, WEIGHT=%s, WEIGHT_RATIO=%s\n" $TOTAL_WEIGHT $WEIGHT $WEIGHT_RATIO
         printf "TOTAL_STAKE=%s, STAKE=%s\n" $TOTAL_STAKE $STAKE
 
-        if ! { [ -z $WEIGHT_RATIO ] || [ -z $STAKE ]; }; then
-            printf "freeton.validator.weight:%s|g" $WEIGHT_RATIO | nc -q 0 $HOST_IP $STATSD_PORT
-            printf "freeton.validator.stake:%s|g" $STAKE | nc -q 0 $HOST_IP $STATSD_PORT
+        printf '%s %s' $WEIGHT_RATIO $STAKE > "$PAST_ELECTION_ID_FILE"
+    fi
 
-            touch "$PAST_ELECTION_ID_FILE"
-        fi
+    read -r WEIGHT_RATIO STAKE <<< $(cat "$PAST_ELECTION_ID_FILE")
+
+    if ! { [ -z $WEIGHT_RATIO ] || [ -z $STAKE ]; }; then
+        printf "freeton.validator.weight:%s|g" $WEIGHT_RATIO | nc -q 0 $HOST_IP $STATSD_PORT
+        printf "freeton.validator.stake:%s|g" $STAKE | nc -q 0 $HOST_IP $STATSD_PORT
+    else
+        rm -f "$PAST_ELECTION_ID_FILE"
     fi
 fi
-
