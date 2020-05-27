@@ -6,23 +6,35 @@ This toolbox allows you to:
 - have a validator node up & running in no time (almost)
 - receive emails with transaction confirmation requests
 - automatically participate in validators elections
-- monitor your setup via beautiful dashboard based on TICK stack
+- monitor your setup via informative dashboard based on TICK stack
 
 ![dashboard view](gallery/dashboard-1.png)
 
 ## Approach
 The main idea is to use trusted mail server as a message broker to send notifications from the Validator to the Operator &ndash; separate entity which confirms transactions with its custodian key pair. There may be more than one Operator.
 
+Validator is dockerized so that one can (re-)build it from scratch with a single command. Docker handles crashes and restarts service automatically.
+
+DB backup is saved every time service stops and is restored when it starts.
+
 ## Disclaimer
 All you'll see below works well for me on the __TESTNET__. I didn't test it on the MAINNET.
 
-Details of installation and setup of tools mentioned below, i.e. Docker, Docker Compose, cron, msmtp and imapfilter are out of scope of this guide, though Toolbox provides you with sample config files which require minimal modifications to get the job done.
+Details of installation and setup of tools mentioned below, e.g. Docker or Docker Compose, are out of scope of this guide.
 
 ## Validator setup
 We'll be running validator node in a Docker container so you'll need __Docker__ and __Docker Compose__ installed.
 Validator script is required to be run periodically so we'll need some kind of __cron__ (e.g. cronie or fcron).
 To send email notifications we'll use dockerized version of __msmtp__ utility provided by the Toolbox.
 Also we'll need __git__ to clone this repo :)
+
+0. Make sure you're able to run `docker` and `docker-compose` commands without using `sudo`
+    ```bash
+    ### By default those commands require sudo. Add yourself to the 'docker' group to change it:
+    $ sudo usermod -aG docker $(id -un)
+    ### Re-login:
+    $ su - $(id -un)
+    ```
 
 1. Run the folder structure initialization script
     ```bash
@@ -38,8 +50,6 @@ Also we'll need __git__ to clone this repo :)
 
     ```bash
     $ cd /opt/freeton-toolbox/validator
-    ### By default docker-compose command requires sudo. Add yourself to the 'docker' group to change it:
-    ### sudo usermod -aG docker $(id -un) && su - $(id -un)
     $ docker-compose build --build-arg EXTERNAL_UID=$(id -u) --build-arg EXTERNAL_GID=$(id -g) freeton-validator-dev
     ### Run the validator container:
     $ docker-compose up -d freeton-validator-dev

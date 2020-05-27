@@ -59,8 +59,6 @@ prep_term
 
 wait_term
 
-EXIT_CODE=$?
-
-echo "validator-engine exited with code $EXIT_CODE"
+echo "INFO: making db backup..."
 
 rsync -au "${TON_WORK_DIR}" "$(dirname "${TON_WORK_BACKUP_DIR}")"
