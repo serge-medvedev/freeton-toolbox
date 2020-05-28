@@ -44,8 +44,8 @@ Also we'll need __git__ to clone this repo :)
 
 2. Build the image and run the container
 
-    For the fastest syncing with the network we'll use `tmpfs` bind mount to store the DB and regular disk volume to store the backup. It means that validator machine must have enough RAM, swap and disk space to contain the FreeTON DB.
-    
+    > NOTE: For the fastest syncing with the network we'll use `tmpfs` bind mount.
+    When the validator gets synced, comment out `tmpfs` volume in the compose-file and restart the container.
     In the future `tmpfs` approach will be rather impossible due to DB growth but for now it works just well.
 
     ```bash
