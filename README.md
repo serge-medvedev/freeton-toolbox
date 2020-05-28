@@ -8,6 +8,8 @@ This toolbox allows you to:
 - automatically participate in validators elections
 - monitor your setup via informative dashboard based on TICK stack
 
+Additionally you'll be able to analyze validator's logs, parsed and ready to be aggregated, grouped and filtered.
+
 ![dashboard view](gallery/dashboard-1.png)
 
 ## Approach
