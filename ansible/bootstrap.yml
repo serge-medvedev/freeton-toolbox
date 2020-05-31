@@ -26,13 +26,11 @@
 
     - name: build the freeton node [dev] image
       become: no
-      shell: >-
-        docker-compose build
-          --quiet
-          --no-cache
-          --build-arg EXTERNAL_UID="{{ getent_passwd[hostvars[inventory_hostname]['ansible_user']][1] }}"
-          --build-arg EXTERNAL_GID="{{ getent_passwd[hostvars[inventory_hostname]['ansible_user']][2] }}"
-          freeton-validator-dev
+      shell: docker-compose 
+               build --quiet --no-cache
+               --build-arg EXTERNAL_UID="{{ getent_passwd[hostvars[inventory_hostname]['ansible_user']][1] }}"
+               --build-arg EXTERNAL_GID="{{ getent_passwd[hostvars[inventory_hostname]['ansible_user']][2] }}"
+               freeton-validator-dev
       args:
         chdir: /opt/freeton-toolbox/validator
       async: 3600
