@@ -1,0 +1,22 @@
+---
+- name: create a home for the toolbox
+  file:
+    path: /opt/freeton-toolbox
+    state: directory
+    owner: "{{ ansible_user }}"
+
+- name: create a place for logs
+  file:
+    path: /var/log/freeton-toolbox
+    state: directory
+    owner: "{{ ansible_user }}"
+
+- name: create a place for influxdb data
+  file:
+    path: /var/lib/influxdb
+    state: directory
+
+- name: create a place for chronograf data
+  file:
+    path: /var/lib/chronograf
+    state: directory

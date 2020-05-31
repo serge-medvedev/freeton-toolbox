@@ -1,0 +1,7 @@
+---
+ansible_user: freeton
+ansible_ssh_private_key_file: /opt/freeton-toolbox/.secrets/freeton-id_rsa
+docker_users:
+  - freeton
+pip_install_packages:
+  - docker

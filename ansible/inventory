@@ -1,0 +1,22 @@
+---
+all:
+  hosts:
+    validator-01:
+      ansible_host: 192.168.1.2
+      ansible_port: 2201
+    validator-02:
+      ansible_host: 192.168.1.2
+      ansible_port: 2202
+    # operator-01:
+    #   ansible_host: 192.168.1.2
+    #   ansible_port: 2222
+
+freeton:
+  children:
+    validators:
+      hosts:
+        validator-01:
+        validator-02:
+    # operators:
+    #   hosts:
+    #     operator-01:

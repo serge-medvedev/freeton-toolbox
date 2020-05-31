@@ -1,0 +1,39 @@
+---
+- hosts: freeton
+
+  become: yes
+
+  roles:
+    - { role: geerlingguy.repo-epel, when: ansible_os_family == 'RedHat' }
+    - geerlingguy.docker
+    - geerlingguy.git
+    - geerlingguy.pip
+    - robertdebock.cron
+
+  tasks:
+    - include_tasks: create-dirs.yml
+
+    - name: get the toolbox
+      become: no
+      git:
+        repo: https://github.com/serge-medvedev/freeton-toolbox.git
+        dest: /opt/freeton-toolbox
+
+    - name: get ansible user info
+      getent:
+        database: passwd
+        key: "{{ ansible_user }}"
+
+    - name: build the freeton node [dev] image
+      become: no
+      shell: >-
+        docker-compose build
+          --quiet
+          --no-cache
+          --build-arg EXTERNAL_UID="{{ getent_passwd[hostvars[inventory_hostname]['ansible_user']][1] }}"
+          --build-arg EXTERNAL_GID="{{ getent_passwd[hostvars[inventory_hostname]['ansible_user']][2] }}"
+          freeton-validator-dev
+      args:
+        chdir: /opt/freeton-toolbox/validator
+      async: 3600
+      poll: 15
