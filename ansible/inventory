@@ -1,10 +1,10 @@
 ---
 all:
   hosts:
-    validator-01:
+    validator-ubuntu:
       ansible_host: 192.168.1.2
       ansible_port: 2201
-    validator-02:
+    validator-centos:
       ansible_host: 192.168.1.2
       ansible_port: 2202
     # operator-01:
@@ -15,8 +15,8 @@ freeton:
   children:
     validators:
       hosts:
-        validator-01:
-        validator-02:
+        validator-ubuntu:
+        validator-centos:
     # operators:
     #   hosts:
     #     operator-01:
