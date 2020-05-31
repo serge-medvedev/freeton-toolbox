@@ -15,30 +15,30 @@ It provides you with unified experience of deploying the validator node on Debia
 ## HOWTO
 
 1. Install Ansible on the Controller
-1. Edit the [inventory](inventory) file by specifying the Validator's IP address
-1. Setup Validator
-    - create `freeton` user and allow it to use sudo without password (example for Debian/Ubuntu)
+1. On the Controller, make Ansible able to communicate with Validator over ssh
+    - edit the [inventory](inventory) file by specifying the Validator's IP address
+    - generate an RSA key pair and put it in _/opt/freeton-toolbox/.secrets_ folder (create if not exists and chown to yourself)
       ```console
-      # apt-get update && apt-get install -y sudo
+      $ ssh-keygen -b 2048 -t rsa -f /opt/freeton-toolbox/.secrets/freeton-id_rsa -q -N "" # pubkey will have *.pub extension
+      ```
+1. Setup Validator (example for Debian/Ubuntu, refer to [this](test/vagrant/centos/bootstrap.sh) for additional steps required in RedHat/CentOS)
+    - make sure _python2_ and _sudo_ are installed
+      ```console
+      # apt-get update && apt-get install python-minimal sudo
+      ```
+    - create `freeton` user and allow it to use sudo without password
+      ```console
       # useradd -m -G sudo freeton
       # echo "freeton ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/freeton
       ```
-      > NOTE: refer to [this](test/vagrant/centos/bootstrap.sh) for additional steps required in RedHat/CentOS
+    - authorize the RSA key generated on the Controller
+      ```console
+      # mkdir -p /home/freeton/.ssh
+      # echo "<contents of freeton-id_rsa.pub>" > /home/freeton/.ssh/authorized_keys
+      # chown -R freeton:freeton /home/freeton
+      ```
     - make sure sshd is configured so that pubkey authentication is enabled (default);
     _optionally_ disable password authentication (recommended)
-1. On the Controller, create an RSA key pair and authorize it on the Validator for the `freeton` user
-    - generate keys and store them in _/opt/freeton-toolbox/.secrets_ folder (create if not exists and chown to yourself)
-      ```console
-      $ ssh-keygen -b 2048 -t rsa -f /opt/freeton-toolbox/.secrets/freeton-id_rsa -q -N ""
-      ```
-    - authorize it to be able to login as the `freeton` user
-      ```console
-      $ ssh-copy-id -i /opt/freeton-toolbox/.secrets/freeton-id_rsa freeton@1.2.3.4 # where 1.2.3.4 is the Validator's IP address
-      ```
-    - ensure you're able to login
-      ```console
-      $ ssh -i /opt/freeton-toolbox/.secrets/freeton-id_rsa freeton@1.2.3.4 date # should print current date
-      ```
 1. Deploy
     - at the end of the day (figuratively) this will run the validator node
       ```console
