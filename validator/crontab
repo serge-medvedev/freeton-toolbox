@@ -1,2 +1,2 @@
-*/5 * * * * /opt/freeton-toolbox/validator/validator-script-wrapper.sh john.doe@example.com 10001 >> /var/log/freeton-toolbox/validator-script-wrapper.log 2>&1
+*/5 * * * * /opt/freeton-toolbox/validator/validator-script-wrapper.sh 10001 john.doe@example.com >> /var/log/freeton-toolbox/validator-script-wrapper.log 2>&1
 * * * * * /opt/freeton-toolbox/validator/getstats-script-wrapper.sh >> /var/log/freeton-toolbox/getstats-script-wrapper.log 2>&1

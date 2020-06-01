@@ -1,1 +1,1 @@
-*/4 * * * * imapfilter >> /var/log/freeton-toolbox/imapfilter.log 2>&1
+*/4 * * * * /opt/freeton-toolbox/operator/transactions-monitor.sh >> /var/log/freeton-toolbox/transactions-monitor.log 2>&1

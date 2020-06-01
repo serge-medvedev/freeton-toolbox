@@ -13,9 +13,7 @@ Additionally you'll be able to analyze validator's logs, parsed and ready to be 
 ![dashboard view](gallery/dashboard-1.png)
 
 ## Approach
-The main idea is to use trusted mail server as a message broker to send notifications from the Validator to the Operator &ndash; separate entity which confirms transactions with its custodian key pair. There may be more than one Operator.
-
-Validator is dockerized so that one can (re-)build it from scratch with a single command. Docker handles crashes and restarts service automatically.
+Everything is dockerized so that you, for instance, can (re-)build validator node from scratch with a single command. Docker handles crashes and restarts service automatically.
 
 DB backup is saved every time service stops and is restored when it starts.
 
@@ -44,7 +42,7 @@ Also we'll need __git__ to clone this repo :)
     $ curl -s "$FSINIT_URL" | sudo bash -s $(id -u) $(id -g)
     ```
 
-2. Build the image and run the container
+1. Build the image and run the container
 
     > NOTE: For the fastest syncing with the network we'll use `tmpfs` bind mount.
     When the validator gets synced, comment out `tmpfs` volume in the compose-file and restart the container.
@@ -61,20 +59,21 @@ Also we'll need __git__ to clone this repo :)
     $ docker-compose logs --tail 500 --follow freeton-validator-dev
     ```
 
-3. Modify __msmtp__ [config file](validator/msmtp/msmtprc) by replacing dummy values with real ones and build the image
+1. OPTIONAL (if you want to receive emails on transaction confirmation requests): modify __msmtp__ [config file](validator/msmtp/msmtprc) by replacing dummy values with real ones and build the image
     ```bash
     $ docker-compose build msmtp
     ```
 
-4. When the validator node is synced, import the crontab to periodically run the validator script and other jobs
+1. When the validator node is synced, import the crontab to periodically run the validator script and other jobs
     ```bash
-    ### IMPORTANT: before you continue, change the fake email address with a valid recipient's one in the crontab file!
-    ### Also, you may want to change the stake amount which is specified there, too.
+    ### IMPORTANT: review the crontab file before activation
+    ### You may want to change the stake amount which is specified there.
+    ### Remove dummy email address passed to the script if you don't want to receive emails, or replace it with yours otherwise
     ### Remove the stats gathering job if you don't want to see such a useful information on the dashboard.
     $ crontab /opt/freeton-toolbox/validator/crontab
     ```
 
-5. Now, you might want to set up the dashboard to visualize some of the runtime metrics.
+1. Now, you might want to set up the dashboard to visualize some of the runtime metrics.
     ```bash
     $ docker-compose up -d influxdb telegraf chronograf
     ```
@@ -84,13 +83,13 @@ That's it! Your validator node is all set.
 
 ## Operator setup
 
-This one is much simpler. We'll have to run a periodic [cron job](operator/crontab) to get email notifications sent by the Validator and confirm those transactions locally. To do this we'll be using __imapfilter__ utility (see the [configuration file sample](operator/imapfilter/config.lua)) for dealing with emails and dockerized version of `tonos-cli` utility for dealing with transactions.
+This one is much simpler. We'll have to run a periodic [cron job](operator/crontab) to monitor transactions initiated by the Validator and confirm them locally.
 
-1. Repeat step 1 of the previous section
+1. Repeat steps 0 and 1 of the previous section
 
-2. Put the custodian keys in `/opt/freeton-toolbox/.secrets/deploy.keys.json`
+1. Put the custodian keys in `/opt/freeton-toolbox/.secrets/deploy.keys.json`
 
-3. Build the `tonos-cli` image:
+1. Build the `tonos-cli` image:
     ```bash
     $ cd /opt/freeton-toolbox/tonos-cli
     ### Build the image.
@@ -103,12 +102,10 @@ This one is much simpler. We'll have to run a periodic [cron job](operator/cront
 
     Note the presense of config files ([one](tonos-cli/tonlabs-cli.conf-dev.json), [two](tonos-cli/tonlabs-cli.conf.json)) which are being used to store default values keeping your commands nice and clear.
 
-4. Import the crontab to periodically run __imapfilter__ to check email notifications
+1. Import the crontab
     ```bash
     $ crontab /opt/freeton-toolbox/operator/crontab
     ```
-
-    __IMPORTANT__: cron job handles __ONLY UNREAD__ messages, thus if you want to read them (e.g. on your phone), don't forget to mark them unread afterwards.
 
 That's it! Your setup is ready to automatically confirm transactions intiated by the Validator.
 
