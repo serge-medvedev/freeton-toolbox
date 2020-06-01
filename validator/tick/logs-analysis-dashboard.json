@@ -1,0 +1,409 @@
+{
+	"meta": {
+		"chronografVersion": "1.8.4",
+		"sources": {
+			"0": {
+				"name": "http://influxdb:8086",
+				"link": "/chronograf/v1/sources/0"
+			}
+		}
+	},
+	"dashboard": {
+		"id": "3",
+		"cells": [
+			{
+				"i": "00434c79-fb6b-496b-89e2-4ce47a0fc52d",
+				"x": 0,
+				"y": 5,
+				"w": 12,
+				"h": 7,
+				"name": "Important Logs",
+				"queries": [
+					{
+						"query": "SELECT \"severity\", \"location\", \"context\", \"param\", \"message\" FROM \"telegraf\".\"autogen\".\"docker_log\" WHERE severity <= 2 AND message !~ /SLOW/ AND context != '!session' AND time > :dashboardTime: AND time < :upperDashboardTime:",
+						"queryConfig": {
+							"database": "",
+							"measurement": "",
+							"retentionPolicy": "",
+							"fields": [],
+							"tags": {},
+							"groupBy": {
+								"time": "",
+								"tags": []
+							},
+							"areTagsAccepted": false,
+							"rawText": "SELECT \"severity\", \"location\", \"context\", \"param\", \"message\" FROM \"telegraf\".\"autogen\".\"docker_log\" WHERE severity <= 2 AND message !~ /SLOW/ AND context != '!session' AND time > :dashboardTime: AND time < :upperDashboardTime:",
+							"range": null,
+							"shifts": null
+						},
+						"source": "",
+						"type": "influxql"
+					}
+				],
+				"axes": {
+					"x": {
+						"bounds": [
+							"",
+							""
+						],
+						"label": "",
+						"prefix": "",
+						"suffix": "",
+						"base": "10",
+						"scale": "linear"
+					},
+					"y": {
+						"bounds": [
+							"",
+							""
+						],
+						"label": "",
+						"prefix": "",
+						"suffix": "",
+						"base": "10",
+						"scale": "linear"
+					},
+					"y2": {
+						"bounds": [
+							"",
+							""
+						],
+						"label": "",
+						"prefix": "",
+						"suffix": "",
+						"base": "10",
+						"scale": "linear"
+					}
+				},
+				"type": "table",
+				"colors": [
+					{
+						"id": "base",
+						"type": "text",
+						"hex": "#DC4E58",
+						"name": "fire",
+						"value": "-1000000000000000000"
+					},
+					{
+						"id": "7f53265c-42bf-415a-b435-5ab26771719a",
+						"type": "text",
+						"hex": "#FFB94A",
+						"name": "pineapple",
+						"value": "2"
+					}
+				],
+				"legend": {},
+				"tableOptions": {
+					"verticalTimeAxis": true,
+					"sortBy": {
+						"internalName": "time",
+						"displayName": "",
+						"visible": true
+					},
+					"wrapping": "truncate",
+					"fixFirstColumn": true
+				},
+				"fieldOptions": [
+					{
+						"internalName": "time",
+						"displayName": "",
+						"visible": true
+					},
+					{
+						"internalName": "docker_log.severity",
+						"displayName": "severity",
+						"visible": true
+					},
+					{
+						"internalName": "docker_log.location",
+						"displayName": "location",
+						"visible": true
+					},
+					{
+						"internalName": "docker_log.context",
+						"displayName": "context",
+						"visible": true
+					},
+					{
+						"internalName": "docker_log.param",
+						"displayName": "param",
+						"visible": true
+					},
+					{
+						"internalName": "docker_log.message",
+						"displayName": "message",
+						"visible": true
+					}
+				],
+				"timeFormat": "MM/DD/YYYY HH:mm:ss",
+				"decimalPlaces": {
+					"isEnforced": true,
+					"digits": 0
+				},
+				"note": "",
+				"noteVisibility": "default",
+				"links": {
+					"self": "/chronograf/v1/dashboards/3/cells/00434c79-fb6b-496b-89e2-4ce47a0fc52d"
+				}
+			},
+			{
+				"i": "4164efdd-510c-4bc4-b1c1-b2abdcf0f2ab",
+				"x": 0,
+				"y": 0,
+				"w": 6,
+				"h": 5,
+				"name": "SLOWs by Location",
+				"queries": [
+					{
+						"query": "SELECT count(message) AS \"SLOW\" FROM \"telegraf\".\"autogen\".\"docker_log\" WHERE message =~ /SLOW/ AND time > :dashboardTime: AND time < :upperDashboardTime: GROUP BY time(:interval:), location FILL(null)",
+						"queryConfig": {
+							"database": "",
+							"measurement": "",
+							"retentionPolicy": "",
+							"fields": [],
+							"tags": {},
+							"groupBy": {
+								"time": "",
+								"tags": []
+							},
+							"areTagsAccepted": false,
+							"rawText": "SELECT count(message) AS \"SLOW\" FROM \"telegraf\".\"autogen\".\"docker_log\" WHERE message =~ /SLOW/ AND time > :dashboardTime: AND time < :upperDashboardTime: GROUP BY time(:interval:), location FILL(null)",
+							"range": null,
+							"shifts": null
+						},
+						"source": "",
+						"type": "influxql"
+					}
+				],
+				"axes": {
+					"x": {
+						"bounds": [
+							"",
+							""
+						],
+						"label": "",
+						"prefix": "",
+						"suffix": "",
+						"base": "10",
+						"scale": "linear"
+					},
+					"y": {
+						"bounds": [
+							"",
+							""
+						],
+						"label": "",
+						"prefix": "",
+						"suffix": "",
+						"base": "10",
+						"scale": "linear"
+					},
+					"y2": {
+						"bounds": [
+							"",
+							""
+						],
+						"label": "",
+						"prefix": "",
+						"suffix": "",
+						"base": "10",
+						"scale": "linear"
+					}
+				},
+				"type": "line",
+				"colors": [
+					{
+						"id": "756bf02b-f060-435e-9596-b5e9349f965e",
+						"type": "scale",
+						"hex": "#FDC44F",
+						"name": "Cthulhu",
+						"value": "0"
+					},
+					{
+						"id": "2c8f86f8-ddb4-4fef-9c0a-5009455d83e8",
+						"type": "scale",
+						"hex": "#007C76",
+						"name": "Cthulhu",
+						"value": "0"
+					},
+					{
+						"id": "2eb2ad0d-c6fb-41ab-a049-f0f6c186694f",
+						"type": "scale",
+						"hex": "#8983FF",
+						"name": "Cthulhu",
+						"value": "0"
+					}
+				],
+				"legend": {},
+				"tableOptions": {
+					"verticalTimeAxis": true,
+					"sortBy": {
+						"internalName": "time",
+						"displayName": "",
+						"visible": true
+					},
+					"wrapping": "truncate",
+					"fixFirstColumn": true
+				},
+				"fieldOptions": [
+					{
+						"internalName": "time",
+						"displayName": "",
+						"visible": true
+					}
+				],
+				"timeFormat": "MM/DD/YYYY HH:mm:ss",
+				"decimalPlaces": {
+					"isEnforced": true,
+					"digits": 2
+				},
+				"note": "",
+				"noteVisibility": "default",
+				"links": {
+					"self": "/chronograf/v1/dashboards/3/cells/4164efdd-510c-4bc4-b1c1-b2abdcf0f2ab"
+				}
+			},
+			{
+				"i": "81644a31-0bf6-449a-aa0a-1884f6582183",
+				"x": 6,
+				"y": 0,
+				"w": 6,
+				"h": 5,
+				"name": "Logs by Location",
+				"queries": [
+					{
+						"query": "SELECT count(message) FROM \"telegraf\".\"autogen\".\"docker_log\" WHERE time > :dashboardTime: AND time < :upperDashboardTime: GROUP BY time(:interval:), location FILL(null)",
+						"queryConfig": {
+							"database": "telegraf",
+							"measurement": "docker_log",
+							"retentionPolicy": "autogen",
+							"fields": [
+								{
+									"value": "count",
+									"type": "func",
+									"alias": "",
+									"args": [
+										{
+											"value": "message",
+											"type": "field",
+											"alias": ""
+										}
+									]
+								}
+							],
+							"tags": {},
+							"groupBy": {
+								"time": "auto",
+								"tags": [
+									"location"
+								]
+							},
+							"areTagsAccepted": false,
+							"fill": "null",
+							"rawText": null,
+							"range": null,
+							"shifts": null
+						},
+						"source": "",
+						"type": "influxql"
+					}
+				],
+				"axes": {
+					"x": {
+						"bounds": [
+							"",
+							""
+						],
+						"label": "",
+						"prefix": "",
+						"suffix": "",
+						"base": "10",
+						"scale": "linear"
+					},
+					"y": {
+						"bounds": [
+							"",
+							""
+						],
+						"label": "",
+						"prefix": "",
+						"suffix": "",
+						"base": "10",
+						"scale": "linear"
+					},
+					"y2": {
+						"bounds": [
+							"",
+							""
+						],
+						"label": "",
+						"prefix": "",
+						"suffix": "",
+						"base": "10",
+						"scale": "linear"
+					}
+				},
+				"type": "line",
+				"colors": [
+					{
+						"id": "7809392a-9bac-4f15-8b51-3f59e06ff7d0",
+						"type": "scale",
+						"hex": "#31C0F6",
+						"name": "Nineteen Eighty Four",
+						"value": "0"
+					},
+					{
+						"id": "e576c573-4cbe-4506-a417-878262e8ecc2",
+						"type": "scale",
+						"hex": "#A500A5",
+						"name": "Nineteen Eighty Four",
+						"value": "0"
+					},
+					{
+						"id": "e20cf0dd-d3e2-4ab9-9a34-f0cdf9b8d219",
+						"type": "scale",
+						"hex": "#FF7E27",
+						"name": "Nineteen Eighty Four",
+						"value": "0"
+					}
+				],
+				"legend": {},
+				"tableOptions": {
+					"verticalTimeAxis": true,
+					"sortBy": {
+						"internalName": "time",
+						"displayName": "",
+						"visible": true
+					},
+					"wrapping": "truncate",
+					"fixFirstColumn": true
+				},
+				"fieldOptions": [
+					{
+						"internalName": "time",
+						"displayName": "",
+						"visible": true
+					}
+				],
+				"timeFormat": "MM/DD/YYYY HH:mm:ss",
+				"decimalPlaces": {
+					"isEnforced": true,
+					"digits": 2
+				},
+				"note": "",
+				"noteVisibility": "default",
+				"links": {
+					"self": "/chronograf/v1/dashboards/3/cells/81644a31-0bf6-449a-aa0a-1884f6582183"
+				}
+			}
+		],
+		"templates": [],
+		"name": "Logs Analysis",
+		"organization": "default",
+		"links": {
+			"self": "/chronograf/v1/dashboards/3",
+			"cells": "/chronograf/v1/dashboards/3/cells",
+			"templates": "/chronograf/v1/dashboards/3/templates"
+		}
+	}
+}
