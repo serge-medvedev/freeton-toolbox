@@ -14,12 +14,10 @@ It provides you with unified experience of deploying the validator node on Debia
 
 ## HOWTO
 
-1. Install Ansible on the Controller
-1. On the Controller, make Ansible able to communicate with Validator over ssh
-    - edit the [inventory](inventory) file by specifying the Validator's IP address
-    - generate an RSA key pair and put it in _/opt/freeton-toolbox/.secrets_ folder (create if not exists and chown to yourself)
+1. Make Controller able to communicate with Validator via ssh passwordslessly
+    - generate an RSA key pair for that
       ```console
-      $ ssh-keygen -b 2048 -t rsa -f /opt/freeton-toolbox/.secrets/freeton-id_rsa -q -N "" # pubkey will have *.pub extension
+      $ ssh-keygen -b 2048 -t rsa -f /tmp/freeton-id_rsa -q -N "" # pubkey will have *.pub extension
       ```
 1. Setup Validator (example for Debian/Ubuntu, refer to [this](test/vagrant/centos/bootstrap.sh) for additional steps required in RedHat/CentOS)
     - make sure _python2_ and _sudo_ are installed
@@ -40,6 +38,22 @@ It provides you with unified experience of deploying the validator node on Debia
     - make sure sshd is configured so that pubkey authentication is enabled (default);
     _optionally_ disable password authentication (recommended)
 1. Deploy
+    - install Ansible
+    - get the Toolbox
+      ```console
+      $ sudo git clone https://github.com/serge-medvedev/freeton-toolbox.git /opt/freeton-toolbox
+      $ sudo chown -R $(id -u):$(id -g) /opt/freeton-toolbox
+      ```
+    - move the RSA key pair generated at the first step to _/opt/freeton-toolbox/.secrets_
+      ```console
+      $ mkdir -p /opt/freeton-toolbox/.secrets
+      $ mv /tmp/freeton-id_rsa* /opt/freeton-toolbox/.secrets/
+      ```
+    - edit the [inventory](inventory) file by specifying the Validator's IP address
+    - install Ansible playbook requirements
+      ```console
+      $ cd /opt/freeton-toolbox/ansible
+      $ ansible-galaxy install -r requirements
     - at the end of the day (figuratively) this will run the validator node
       ```console
       $ ansible-playbook -l validators bootstrap.yml

@@ -1,0 +1,6 @@
+---
+- name: geerlingguy.repo-epel
+- name: geerlingguy.docker
+- name: geerlingguy.git
+- name: geerlingguy.pip
+- name: robertdebock.cron
