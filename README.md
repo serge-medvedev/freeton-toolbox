@@ -102,6 +102,13 @@ This one is much simpler. We'll have to run a periodic [cron job](operator/cront
 
     Note the presense of config files ([one](tonos-cli/tonlabs-cli.conf-dev.json), [two](tonos-cli/tonlabs-cli.conf.json)) which are being used to store default values keeping your commands nice and clear.
 
+1. Install `jq`
+    ```bash
+    ### Debian/Ubuntu
+    $ sudo apt-get install jq
+    ### RedHat/CentOS
+    $ sudo yum install jq
+    ```
 1. Import the crontab
     ```bash
     $ crontab /opt/freeton-toolbox/operator/crontab
