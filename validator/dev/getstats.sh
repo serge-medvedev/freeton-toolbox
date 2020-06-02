@@ -31,7 +31,6 @@ if [ "$ACTIVE_ELECTION_ID" -eq 0 ] && [ ! -f "$PAST_ELECTION_ID_FILE" ]; then
         -a 127.0.0.1:3031 \
         -p $KEYS_DIR/liteserver.pub \
         -rc "getconfig 34" \
-        -rc "getconfig 36" \
         -rc "$(printf "runmethod %s past_elections" "$ELECTOR_ADDR_BASE64")" \
         -rc "quit" 2>&1)"
     TOTAL_WEIGHT=$(echo "$LC_OUTPUT" | perl -ne '/^\s*cur_validators:.*total_weight:(\d+)$/ && print $1')
@@ -49,7 +48,7 @@ if [ "$ACTIVE_ELECTION_ID" -eq 0 ] && [ ! -f "$PAST_ELECTION_ID_FILE" ]; then
     cat "$PAST_ELECTION_ID_FILE"
 fi
 
-read -r WEIGHT_RATIO STAKE <<< $(cat "$PAST_ELECTION_ID_FILE")
+read -r WEIGHT_RATIO STAKE <<< $(cat "$PAST_ELECTION_ID_FILE" || echo '0 0')
 
 if ! { [ -z $WEIGHT_RATIO ] || [ -z $STAKE ]; }; then
     printf "freeton.validator.weight:%s|g" $WEIGHT_RATIO | nc -q 0 $HOST_IP $STATSD_PORT
