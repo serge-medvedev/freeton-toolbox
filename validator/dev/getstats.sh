@@ -23,7 +23,7 @@ LC_OUTPUT=$($TON_BUILD_DIR/lite-client/lite-client \
     -rc "$(printf "runmethod %s past_election_ids" "$ELECTOR_ADDR_BASE64")" \
     -rc "quit" 2>&1)
 ACTIVE_ELECTION_ID=$(echo "$LC_OUTPUT" | perl -ne '/^result:\s*\[\s*(\d+)\s*\]\s*$/ && print $1')
-PAST_ELECTION_ID=$(echo "$LC_OUTPUT" | perl -ne '/^result:\s*\[\s*\((\d+)(?>\s+\d+)?\)\s*\]\s*$/ && print $1')
+PAST_ELECTION_ID=$(echo "$LC_OUTPUT" | perl -ne '/^result:\s*\[\s*\((\d+\s*)+\)\s*\]\s*$/ && print $1')
 PAST_ELECTION_ID_FILE="/tmp/freeton-validator-stats-$PAST_ELECTION_ID"
 
 if [ "$ACTIVE_ELECTION_ID" -eq 0 ] && [ ! -f "$PAST_ELECTION_ID_FILE" ]; then
@@ -31,6 +31,7 @@ if [ "$ACTIVE_ELECTION_ID" -eq 0 ] && [ ! -f "$PAST_ELECTION_ID_FILE" ]; then
         -a 127.0.0.1:3031 \
         -p $KEYS_DIR/liteserver.pub \
         -rc "getconfig 34" \
+        -rc "getconfig 36" \
         -rc "$(printf "runmethod %s past_elections" "$ELECTOR_ADDR_BASE64")" \
         -rc "quit" 2>&1)"
     TOTAL_WEIGHT=$(echo "$LC_OUTPUT" | perl -ne '/^\s*cur_validators:.*total_weight:(\d+)$/ && print $1')
