@@ -42,7 +42,7 @@ Also we'll need __git__ to clone this repo :)
     $ curl -s "$FSINIT_URL" | sudo bash -s $(id -u) $(id -g)
     ```
 
-1. Build the image and run the container
+2. Build the image and run the container
 
     > NOTE: For the fastest syncing with the network we'll use `tmpfs` bind mount.
     When the validator gets synced, comment out `tmpfs` volume in the compose-file and restart the container.
@@ -59,12 +59,12 @@ Also we'll need __git__ to clone this repo :)
     $ docker-compose logs --tail 500 --follow freeton-validator-dev
     ```
 
-1. OPTIONAL (if you want to receive emails on transaction confirmation requests): modify __msmtp__ [config file](validator/msmtp/msmtprc) by replacing dummy values with real ones and build the image
+3. OPTIONAL (if you want to receive emails on transaction confirmation requests): modify __msmtp__ [config file](validator/msmtp/msmtprc) by replacing dummy values with real ones and build the image
     ```bash
     $ docker-compose build msmtp
     ```
 
-1. When the validator node is synced, import the crontab to periodically run the validator script and other jobs
+4. When the validator node is synced, import the crontab to periodically run the validator script and other jobs
     ```bash
     ### IMPORTANT: review the crontab file before activation
     ### You may want to change the stake amount which is specified there.
@@ -73,7 +73,7 @@ Also we'll need __git__ to clone this repo :)
     $ crontab /opt/freeton-toolbox/validator/crontab
     ```
 
-1. Now, you might want to set up the dashboard to visualize some of the runtime metrics.
+5. Now, you might want to set up the dashboard to visualize some of the runtime metrics.
     ```bash
     $ docker-compose up -d influxdb telegraf chronograf
     ```
@@ -87,9 +87,9 @@ This one is much simpler. We'll have to run a periodic [cron job](operator/cront
 
 1. Repeat steps 0 and 1 of the previous section
 
-1. Put the custodian keys in `/opt/freeton-toolbox/.secrets/deploy.keys.json`
+2. Put the custodian keys in `/opt/freeton-toolbox/.secrets/deploy.keys.json`
 
-1. Build the `tonos-cli` image:
+3. Build the `tonos-cli` image:
     ```bash
     $ cd /opt/freeton-toolbox/tonos-cli
     ### Build the image.
@@ -102,14 +102,14 @@ This one is much simpler. We'll have to run a periodic [cron job](operator/cront
 
     Note the presense of config files ([one](tonos-cli/tonlabs-cli.conf-dev.json), [two](tonos-cli/tonlabs-cli.conf.json)) which are being used to store default values keeping your commands nice and clear.
 
-1. Install `jq`
+4. Install `jq`
     ```bash
     ### Debian/Ubuntu
     $ sudo apt-get install jq
     ### RedHat/CentOS
     $ sudo yum install jq
     ```
-1. Import the crontab
+5. Import the crontab
     ```bash
     $ crontab /opt/freeton-toolbox/operator/crontab
     ```
@@ -117,5 +117,5 @@ This one is much simpler. We'll have to run a periodic [cron job](operator/cront
 That's it! Your setup is ready to automatically confirm transactions intiated by the Validator.
 
 ## Roadmap
-- add Ansible Playbook(s) to automate software installation and setup operations
-- add actionable alerts
+- add Ansible Playbook(s) to automate software installation and setup operations (in progress)
+- add actionable alerts (via Kapacitor, in progress)
