@@ -17,7 +17,6 @@ services:
       - "THREADS=${VALIDATOR_THREADS}"
     ports:
       - "${VALIDATOR_ADNL_PORT}:${VALIDATOR_ADNL_PORT}/udp"
-    hostname: tatzelwurm-dev.online
     restart: always
 
   msmtp:
