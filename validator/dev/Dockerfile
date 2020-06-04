@@ -17,8 +17,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 WORKDIR "$TOP_DIR/scripts"
 
-RUN sed -i 's/TON_WORK_DIR=".*"/TON_WORK_DIR="\/var\/ton\/work"/g' env.sh \
-    && sed -i 's/ADNL_PORT="30310"/ADNL_PORT="30303"/g' env.sh
+RUN sed -i 's/TON_WORK_DIR=".*"/TON_WORK_DIR="\/var\/ton\/work"/g' env.sh
 
 RUN groupadd -f -g $EXTERNAL_GID freeton \
     && useradd -MN -u $EXTERNAL_UID -g $EXTERNAL_GID -G sudo freeton \

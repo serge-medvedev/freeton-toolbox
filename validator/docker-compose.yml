@@ -12,8 +12,11 @@ services:
       - type: bind
         source: ./dev/.runtime/ton.backup
         target: /var/ton.backup
+    environment:
+      - "ADNL_PORT=${VALIDATOR_ADNL_PORT}"
+      - "THREADS=${VALIDATOR_THREADS}"
     ports:
-      - "30303:30303/udp"
+      - "${VALIDATOR_ADNL_PORT}:${VALIDATOR_ADNL_PORT}/udp"
     hostname: tatzelwurm-dev.online
     restart: always
 

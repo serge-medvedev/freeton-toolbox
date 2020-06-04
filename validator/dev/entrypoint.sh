@@ -3,6 +3,11 @@
 set -e
 
 SCRIPT_DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)
+
+if [ "${ADNL_PORT}" =~ '^[0-9]+$' ]; then
+    sed -i "s/ADNL_PORT=\"30310\"/ADNL_PORT=\"${ADNL_PORT}\"/g" "${SCRIPT_DIR}/env.sh"
+fi
+
 . "${SCRIPT_DIR}/env.sh"
 TON_WORK_BACKUP_DIR=/var/ton.backup/work
 
@@ -55,7 +60,7 @@ prep_term
 "${TON_BUILD_DIR}/validator-engine/validator-engine" \
     --global-config "${TON_WORK_DIR}/etc/ton-global.config.json" \
     --db "${TON_WORK_DIR}/db" \
-    1>/dev/stdout 2>&1 &
+    --threads "${THREADS:-7}" &>/dev/stdout &
 
 wait_term
 
