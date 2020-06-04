@@ -4,7 +4,7 @@ set -e
 
 SCRIPT_DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)
 
-if [ "${ADNL_PORT}" =~ '^[0-9]+$' ]; then
+if [[ "${ADNL_PORT}" =~ ^[0-9]+$ ]]; then
     sed -i "s/ADNL_PORT=\"30310\"/ADNL_PORT=\"${ADNL_PORT}\"/g" "${SCRIPT_DIR}/env.sh"
 fi
 
