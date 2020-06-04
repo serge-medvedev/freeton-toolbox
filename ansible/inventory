@@ -7,9 +7,9 @@ all:
     validator-centos:
       ansible_host: 192.168.1.2
       ansible_port: 2202
-    # operator-01:
-    #   ansible_host: 192.168.1.2
-    #   ansible_port: 2222
+    custodian-01:
+      ansible_host: 192.168.1.2
+      ansible_port: 2203
 
 freeton:
   children:
@@ -17,6 +17,6 @@ freeton:
       hosts:
         validator-ubuntu:
         validator-centos:
-    # operators:
-    #   hosts:
-    #     operator-01:
+    custodians:
+      hosts:
+        custodian-01:

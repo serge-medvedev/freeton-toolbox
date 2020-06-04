@@ -1,0 +1,10 @@
+---
+- name: create a place for influxdb data
+  file:
+    path: /var/lib/influxdb
+    state: directory
+
+- name: create a place for chronograf data
+  file:
+    path: /var/lib/chronograf
+    state: directory

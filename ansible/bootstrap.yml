@@ -19,6 +19,13 @@
         repo: https://github.com/serge-medvedev/freeton-toolbox.git
         dest: /opt/freeton-toolbox
 
+- hosts: validators
+
+  become: yes
+
+  tasks:
+    - include_tasks: create-tick-dirs.yml
+
     - name: get ansible user info
       getent:
         database: passwd
@@ -29,8 +36,56 @@
                build --quiet --no-cache
                --build-arg EXTERNAL_UID="{{ getent_passwd[hostvars[inventory_hostname]['ansible_user']][1] }}"
                --build-arg EXTERNAL_GID="{{ getent_passwd[hostvars[inventory_hostname]['ansible_user']][2] }}"
-               freeton-validator-dev 2>&1
+               freeton-validator-dev
       args:
         chdir: /opt/freeton-toolbox/validator
       async: 3600
       poll: 15
+
+    - name: run the freeton node [dev] container
+      shell: docker-compose up -d --force-recreate freeton-validator-dev
+      args:
+        chdir: /opt/freeton-toolbox/validator
+
+    - name: setup main cron job
+      cron:
+        name: "run validator script"
+        user: "{{ ansible_user }}"
+        minute: "*/5"
+        job: >
+          /opt/freeton-toolbox/validator/validator-script-wrapper.sh {{ stake_size }} {{ email_recipients | join(',') }}
+          >> /var/log/freeton-toolbox/validator-script-wrapper.log 2>&1
+
+    - name: setup stats gathering cron job
+      cron:
+        name: "run stats gathering script"
+        user: "{{ ansible_user }}"
+        job: >
+          /opt/freeton-toolbox/validator/getstats-script-wrapper.sh
+          >> /var/log/freeton-toolbox/getstats-script-wrapper.log 2>&1
+      when: stats_gathering_enabled
+
+- hosts: custodians
+
+  become: yes
+
+  tasks:
+    - name: install jq
+      package:
+        name: jq
+        state: present
+
+    - name: build the tonos-cli image
+      shell: docker-compose build --quiet --no-cache tonos-cli
+      args:
+        chdir: /opt/freeton-toolbox/tonos-cli
+      async: 3600
+      poll: 15
+
+    - name: setup the cron job
+      cron:
+        name: "monitor transactions initiated by the validator"
+        minute: "*/4"
+        job: >
+          /opt/freeton-toolbox/operator/transactions-monitor.sh
+          >> /var/log/freeton-toolbox/transactions-monitor.log 2>&1

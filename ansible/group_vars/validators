@@ -1,0 +1,6 @@
+---
+stake_size: 10001
+email_recipients:
+  - john.doe@example.com
+  - jane.doe@example.com
+stats_gathering_enabled: yes
