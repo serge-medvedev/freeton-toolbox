@@ -24,8 +24,6 @@ RUN groupadd -f -g $EXTERNAL_GID freeton \
     && echo 'freeton ALL=(ALL) NOPASSWD: ALL' > /etc/sudoers.d/freeton \
     && chown -R freeton:freeton "$TOP_DIR"
 
-EXPOSE 30303/udp
-
 USER freeton
 
 COPY --chown=freeton:freeton entrypoint.sh .
