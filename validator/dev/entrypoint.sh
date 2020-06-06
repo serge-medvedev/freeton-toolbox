@@ -45,7 +45,7 @@ if [ ! -d "${TON_WORK_DIR}/db" ]; then
     kill "${FASTSYNC_PID}" 2>/dev/null
     wait "${FASTSYNC_PID}"
 
-    sudo rsync --archive --remove-source-files "${FREETON_FASTSYNC_DIR}" "${TON_WORK_DIR}"
+    sudo rsync --archive --remove-source-files "${FREETON_FASTSYNC_DIR}/" "${TON_WORK_DIR}"
     sudo chown -R freeton:freeton "${TON_WORK_DIR}"
 
     sed -i "s|TON_WORK_DIR=\".*\"|TON_WORK_DIR=\"${TON_WORK_DIR}\"|g" "${SCRIPT_DIR}/env.sh"
