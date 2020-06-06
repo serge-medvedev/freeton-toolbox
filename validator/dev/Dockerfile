@@ -31,5 +31,4 @@ USER freeton
 COPY --chown=freeton:freeton entrypoint.sh .
 COPY --chown=freeton:freeton getstats.sh .
 
-ENTRYPOINT ["./entrypoint.sh"]
-
+CMD ["/bin/bash", "entrypoint.sh"]

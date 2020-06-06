@@ -8,10 +8,10 @@ services:
         source: ./dev/.runtime/ton-keys
         target: /home/freeton/ton-keys
       - type: tmpfs
+        target: /tmp/freeton-fastsync
+      - type: volume
+        source: freeton-validator-dev-data
         target: /var/ton
-      - type: bind
-        source: ./dev/.runtime/ton.backup
-        target: /var/ton.backup
     environment:
       - "ADNL_PORT=${VALIDATOR_ADNL_PORT}"
       - "THREADS=${VALIDATOR_THREADS}"
@@ -77,3 +77,6 @@ services:
     ports:
       - "8888:8888"
     restart: always
+
+volumes:
+  freeton-validator-dev-data:

@@ -13,9 +13,9 @@ Additionally you'll be able to analyze validator's logs, parsed and ready to be 
 ![dashboard view](gallery/dashboard-1.png)
 
 ## Approach
-Everything is dockerized so that you, for instance, can (re-)build validator node from scratch with a single command. Docker handles crashes and restarts service automatically.
+Everything is dockerized so that you, for instance, can (re-)build validator node from scratch with a single command.
 
-DB backup is saved every time service stops and is restored when it starts.
+Docker handles crashes and restarts service automatically.
 
 ## Disclaimer
 All you'll see below works well for me on the __TESTNET__. I didn't test it on the MAINNET.
@@ -45,7 +45,7 @@ Also we'll need __git__ to clone this repo :)
 2. Build the image and run the container
 
     > NOTE: For the fastest syncing with the network we'll use `tmpfs` bind mount.
-    When the validator gets synced, comment out `tmpfs` volume in the compose-file and restart the container.
+    The process is fully automatic: when fastsync is completed, the data will be moved to persistent storage and the node - restarted.
     In the future `tmpfs` approach will be rather impossible due to DB growth but for now it works just well.
 
     ```bash
