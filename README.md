@@ -78,6 +78,7 @@ Also we'll need __git__ to clone this repo :)
     $ docker-compose up -d influxdb telegraf chronograf
     ```
     Open the Chronograf in your browser by visiting `http://<your server ip>:8888`, go to the 'Dashboards' tab and add a new one by importing [the config](validator/tick/dashboard.json).
+    You may need to modify network interface name in the 'Network Usage' visualization.
 
 That's it! Your validator node is all set.
 
