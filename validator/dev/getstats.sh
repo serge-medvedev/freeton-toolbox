@@ -35,7 +35,7 @@ if [ "$ACTIVE_ELECTION_ID" -eq 0 ] && [ ! -f "$PAST_ELECTION_ID_FILE" ]; then
         -rc "$(printf "runmethod %s past_elections" "$ELECTOR_ADDR_BASE64")" \
         -rc "quit" 2>&1)"
     TOTAL_WEIGHT=$(echo "$LC_OUTPUT" | perl -ne '/^\s*cur_validators:.*total_weight:(\d+)$/ && print $1')
-    VALIDATOR_PUBKEY="$(cat "$KEYS_DIR/elections/$VALIDATOR_NAME-request-dump2" | \
+    VALIDATOR_PUBKEY="$(cat "$KEYS_DIR/elections/$VALIDATOR_NAME-request-dump2" 2>&1 | \
         perl -ne '/with validator public key ([A-F0-9]+)/ && print $1')"
     WEIGHT=$(echo "$LC_OUTPUT" | \
         perl -ne "$(printf '/^\s*public_key:\(ed25519_pubkey pubkey:x%s\) weight:(\d+).*$/i && print $1' "$VALIDATOR_PUBKEY")")
