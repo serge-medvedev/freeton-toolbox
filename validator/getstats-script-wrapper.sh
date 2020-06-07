@@ -1,6 +1,6 @@
 #!/bin/bash
 
-COMPOSE_FILE="/opt/freeton-toolbox/validator/docker-compose.yml"
+cd /opt/freeton-toolbox/validator
 
-docker-compose -f "$COMPOSE_FILE" exec -T freeton-validator-dev ./getstats.sh
+docker-compose exec -T freeton-validator-dev ./getstats.sh
 
