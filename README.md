@@ -110,7 +110,7 @@ This one is much simpler. We'll have to run a periodic [cron job](operator/cront
     ### RedHat/CentOS
     $ sudo yum install jq
     ```
-5. Import the crontab
+5. Review [a job script](operator/transactions-monitor.sh) and import the crontab
     ```bash
     $ crontab /opt/freeton-toolbox/operator/crontab
     ```
