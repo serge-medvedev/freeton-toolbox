@@ -1,4 +1,6 @@
-#!/bin/bash
+#!/bin/bash -eEu
+
+set -o pipefail
 
 COMPOSE_FILE=/opt/freeton-toolbox/tonos-cli/docker-compose.yml
 KEYS_FILE=/opt/freeton-toolbox/.secrets/deploy.keys.json # IMPORTANT: make sure it exists
@@ -52,14 +54,16 @@ function confirmElectionTxs() {
     fi
 
     JQ_FILTER="$(printf '.transactions[] | select(.dest == "%s") | .id' $(getElectorAddr))"
-    IDS="$(echo "$(getTransactions $1)" | perl -pe 'chomp' \
-                                        | perl -ne '/Result: (\{.*\})/ && print $1' \
-                                        | jq -r "$JQ_FILTER")"
 
-    if [ ! -z "$IDS" ]; then
-        while IFS= read -r ID; do confirmTransaction $1 $ID; done <<< "$IDS"
-    fi
+    getTransactions $1 \
+        | perl -pe 'chomp' \
+        | perl -ne '/Result: (\{.*\})/ && print $1' \
+        | jq -r "$JQ_FILTER" \
+        | while IFS= read -r ID; do
+            if [[ $ID =~ ^[[:digit:]]+$ ]]; then
+                confirmTransaction $1 $ID
+            fi
+        done
 }
 
 confirmElectionTxs $MSIG_ADDR
-
