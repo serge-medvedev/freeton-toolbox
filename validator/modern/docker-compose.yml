@@ -1,0 +1,29 @@
+version: "2.4"
+services:
+  node:
+    build: .
+    environment:
+      CONSOLE_KEY:
+      CONSOLE_PORT:
+    volumes:
+      - type: volume
+        source: freeton-rnode-data
+        target: /node_db
+    ports:
+      - "${ADNL_PORT}:${ADNL_PORT}/udp"
+      - "${CONSOLE_PORT}:${CONSOLE_PORT}"
+    mem_limit: "${MEM_LIMIT}"
+    restart: always
+  
+  statsd:
+    image: statsd/statsd
+    volumes:
+      - type: bind
+        source: ./statsd/statsd-mapping.yaml
+        target: /statsd-mappings/statsd-mapping.yaml
+        read_only: true
+    restart: always
+
+volumes:
+  freeton-rnode-data:
+
