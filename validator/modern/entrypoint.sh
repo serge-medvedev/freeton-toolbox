@@ -22,7 +22,7 @@ function configure() {
 function run() {
     ARGS=( '--configs' "$CONFIGS_DIR" )
 
-    [ -n "$CONSOLE_KEY" ] && ARGS+=( '--ckey' "$CONSOLE_KEY" )
+    [ ! -f "$CONFIGS_DIR/console_config.json" ] && [ -n "$CONSOLE_KEY" ] && ARGS+=( '--ckey' "$CONSOLE_KEY" )
 
     exec ton_node "${ARGS[@]}" 2>&1
 }
