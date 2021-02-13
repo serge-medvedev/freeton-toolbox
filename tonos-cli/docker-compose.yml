@@ -1,19 +1,26 @@
 version: "2.3"
 services:
     tonos-cli-dev:
-        image: tonos-cli
-        build: .
+        image: sergemedvedev/tonos-cli
         volumes:
             - type: bind
-              source: ./tonlabs-cli.conf-dev.json
-              target: /opt/tonos-cli/tonlabs-cli.conf.json
+              source: ./config/dev/tonos-cli.conf.json
+              target: /opt/tonos-cli/tonos-cli.conf.json
+              read_only: true
+            - type: bind
+              source: /opt/freeton-toolbox/.secrets/net.ton.dev
+              target: /opt/tonos-cli/.secrets
               read_only: true
 
     tonos-cli:
-        image: tonos-cli
-        build: .
+        image: sergemedvedev/tonos-cli
         volumes:
             - type: bind
-              source: ./tonlabs-cli.conf.json
-              target: /opt/tonos-cli/tonlabs-cli.conf.json
+              source: ./config/main/tonos-cli.conf.json
+              target: /opt/tonos-cli/tonos-cli.conf.json
               read_only: true
+            - type: bind
+              source: /opt/freeton-toolbox/.secrets/main.ton.dev
+              target: /opt/tonos-cli/.secrets
+              read_only: true
+
