@@ -4,7 +4,6 @@
 
 This toolbox allows you to:
 - have a validator node up & running in no time (almost)
-- receive emails with transaction confirmation requests
 - automatically participate in validators elections
 - monitor your setup via informative dashboard based on TICK stack
 
@@ -18,14 +17,10 @@ Everything is dockerized so that you, for instance, can (re-)build validator nod
 Docker handles crashes and restarts service automatically.
 
 ## Disclaimer
-All you'll see below works well for me on the __TESTNET__. I didn't test it on the MAINNET.
-
 Details of installation and setup of tools mentioned below, e.g. Docker or Docker Compose, are out of scope of this guide.
 
 ## Validator setup
 We'll be running validator node in a Docker container so you'll need __Docker__ and __Docker Compose__ installed.
-Validator script is required to be run periodically so we'll need some kind of __cron__ (e.g. cronie or fcron).
-To send email notifications we'll use dockerized version of __msmtp__ utility provided by the Toolbox.
 Also we'll need __git__ to clone this repo :)
 
 0. Make sure you're able to run `docker` and `docker-compose` commands without using `sudo`
@@ -59,21 +54,12 @@ Also we'll need __git__ to clone this repo :)
     $ docker-compose logs --tail 500 --follow freeton-validator-dev
     ```
 
-3. OPTIONAL (if you want to receive emails on transaction confirmation requests): modify __msmtp__ [config file](validator/msmtp/msmtprc) by replacing dummy values with real ones and build the image
+3. Run FreeTON Staking Manager
     ```bash
-    $ docker-compose build msmtp
+    $ docker-compose up -d freeton-staking-manager
     ```
 
-4. When the validator node is synced, import the crontab to periodically run the validator script and other jobs
-    ```bash
-    ### IMPORTANT: review the crontab file before activation
-    ### You may want to change the stake amount which is specified there.
-    ### Remove dummy email address passed to the script if you don't want to receive emails, or replace it with yours otherwise
-    ### Remove the stats gathering job if you don't want to see such a useful information on the dashboard.
-    $ crontab /opt/freeton-toolbox/validator/crontab
-    ```
-
-5. Now, you might want to set up the dashboard to visualize some of the runtime metrics.
+4. Now, you might want to set up the dashboard to visualize some of the runtime metrics.
     ```bash
     $ docker-compose up -d influxdb telegraf chronograf
     ```
