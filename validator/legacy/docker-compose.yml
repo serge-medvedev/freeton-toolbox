@@ -19,14 +19,25 @@ services:
       - "${VALIDATOR_ADNL_PORT}:${VALIDATOR_ADNL_PORT}/udp"
     restart: always
 
-  msmtp:
-    image: msmtp
-    build: ./msmtp
+  freeton-staking-manager:
+    image: sergemedvedev/freeton-staking-manager
     volumes:
       - type: bind
-        source: ./msmtp/msmtprc
-        target: /etc/msmtprc
+        source: ./dev/.runtime/ton-keys
+        target: /home/freeton/ton-keys
         read_only: true
+      - type: bind
+        source: ./staking-manager/config.js
+        target: /usr/src/app/config.js
+        read_only: true
+      - type: volume
+        source: freeton-staking-manager-data
+        target: /data/freeton-staking-manager
+    ports:
+      - "127.0.0.1:3000:3000"
+    environment:
+      DEBUG: "app,api,lib:*"
+    restart: always
 
   influxdb:
     image: influxdb:1.8
@@ -80,3 +91,4 @@ services:
 
 volumes:
   freeton-validator-dev-data:
+  freeton-staking-manager-data:

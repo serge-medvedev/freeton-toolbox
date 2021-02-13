@@ -27,6 +27,5 @@ RUN groupadd -f -g $EXTERNAL_GID freeton \
 USER freeton
 
 COPY --chown=freeton:freeton entrypoint.sh .
-COPY --chown=freeton:freeton getstats.sh .
 
 CMD ["/bin/bash", "entrypoint.sh"]

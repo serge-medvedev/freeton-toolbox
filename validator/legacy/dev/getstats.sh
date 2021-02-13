@@ -26,6 +26,13 @@ ACTIVE_ELECTION_ID=$(echo "$LC_OUTPUT" | perl -ne '/^result:\s*\[\s*(\d+)\s*\]\s
 PAST_ELECTION_ID=$(echo "$LC_OUTPUT" | perl -ne '/^result:\s*\[\s*\((\d+\s*)+\)\s*\]\s*$/ && print $1')
 PAST_ELECTION_ID_FILE="/tmp/freeton-validator-stats-$PAST_ELECTION_ID"
 
+printf '%s :: ACTIVE_ELECTION_ID: "%s", PAST_ELECTION_IDS: "%s", PAST_ELECTION_ID: "%s", ' \
+    "$(date)" \
+    $ACTIVE_ELECTION_ID \
+    "$(echo "$LC_OUTPUT" | perl -ne '/^result:\s*\[\s*(\((?>\d+\s*)+\))\s*\]\s*$/ && print $1')" \
+    $PAST_ELECTION_ID
+[ -f "$PAST_ELECTION_ID_FILE" ] && echo 'F+' || echo 'F-'
+
 if [ "$ACTIVE_ELECTION_ID" -eq 0 ] && [ ! -f "$PAST_ELECTION_ID_FILE" ]; then
     LC_OUTPUT="$($TON_BUILD_DIR/lite-client/lite-client \
         -a 127.0.0.1:3031 \
