@@ -1,7 +1,0 @@
-{
-    "abi_path": "SetcodeMultisigWallet.abi.json",
-    "addr": null,
-    "keys_path": "deploy.keys.json",
-    "url": "https://main.ton.dev",
-    "wc": -1
-}
