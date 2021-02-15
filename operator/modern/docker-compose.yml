@@ -1,0 +1,15 @@
+version: "2.4"
+services:
+  console:
+    image: ton-labs-node-tools
+    entrypoint: ["console", "-C", "/etc/ton/console_config.json"]
+    volumes:
+      - type: bind
+        source: ./console_config.json
+        target: /etc/ton/console_config.json
+        read_only: true
+
+  keygen:
+    image: ton-labs-node-tools
+    entrypoint: ["keygen"]
+
