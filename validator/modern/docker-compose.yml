@@ -3,7 +3,6 @@ services:
   node:
     build: .
     environment:
-      CONSOLE_KEY:
       CONSOLE_PORT:
     volumes:
       - type: volume
