@@ -22,8 +22,6 @@ WORKDIR /etc/ton
 
 COPY --from=0 \
     /usr/src/ton-labs-node/target/release/ton_node \
-    /usr/local/bin/
-COPY --from=0 \
     /usr/src/ton-labs-node-tools/target/release/console \
     /usr/src/ton-labs-node-tools/target/release/zerostate \
     /usr/src/ton-labs-node-tools/target/release/gendht \
