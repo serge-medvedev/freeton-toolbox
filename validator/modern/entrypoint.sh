@@ -43,7 +43,7 @@ function run() {
             "$CONSOLE_KEY_INFO" \
             "$CONFIGS_DIR/console_config.json" > "$CONSOLE_CONFIG_JSON"
         mv "$CONSOLE_CONFIG_JSON" "$CONFIGS_DIR/console_config.json"
-        SERVER_ADDR=$(printf '%s:%u' "$(curl -s eth0.me)" "$CONSOLE_PORT")
+        SERVER_ADDR=$(printf '127.0.0.1:%u' "$CONSOLE_PORT")
         jq -s --arg addr "$SERVER_ADDR" '.[0] as $k | { config: .[1] | (.client_key = { type_id: 1209251014, pvt_key: $k.private.pvt_key }) | (.server_address = $addr) }' \
             "$CONSOLE_KEY_INFO" \
             "$CONFIGS_DIR/console_config.json" > "$CONFIGS_DIR/console.json"
