@@ -1,4 +1,4 @@
-# Deployment guide
+# Usage guide
 
 Everything about deployment here is pretty straightforward:
 - build the image;
@@ -25,3 +25,10 @@ Re-start the node only:
 ```console
 $ docker-compose up -d --force-recreate --no-deps node
 ```
+
+When the node starts syncing, you'll be able to see the progress via the command below:
+```console
+$ docker-compose exec node console --cmd getstats
+```
+
+__NOTE__: all the tools from [ton-labs-node-tools](https://github.com/tonlabs/ton-labs-node-tools) are accessible via `exec` command like the one above.
