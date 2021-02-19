@@ -1,4 +1,4 @@
-FROM rust:1.49.0-buster
+FROM rust:1.50.0-buster
 
 WORKDIR /usr/src
 
