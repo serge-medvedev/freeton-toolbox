@@ -2,6 +2,7 @@
 
 CONFIGS_DIR='/etc/ton'
 LOGS_DIR='/var/log/ton'
+WORKING_DIR='/'
 
 mkdir -p "$CONFIGS_DIR" "$LOGS_DIR"
 
@@ -20,6 +21,8 @@ function configure() {
 }
 
 function run() {
+    cd "$WORKING_DIR"
+
     ARGS=( '--configs' "$CONFIGS_DIR" )
 
     if [ ! -f "$CONFIGS_DIR/console_config.json" ]; then

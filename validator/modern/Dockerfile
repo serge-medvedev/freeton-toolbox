@@ -18,8 +18,6 @@ RUN git clone --recurse-submodules https://github.com/tonlabs/ton-labs-node-tool
 
 FROM debian:buster-slim
 
-WORKDIR /etc/ton
-
 COPY --from=0 \
     /usr/src/ton-labs-node/target/release/ton_node \
     /usr/src/ton-labs-node-tools/target/release/console \
@@ -36,7 +34,9 @@ RUN apt-get update && apt-get install -y \
     curl \
     jq
 
-COPY entrypoint.sh /entrypoint.sh
+WORKDIR /etc/ton
+
+COPY entrypoint.sh /
 
 ENTRYPOINT /entrypoint.sh
 
