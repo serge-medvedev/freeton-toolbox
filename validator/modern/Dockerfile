@@ -1,14 +1,21 @@
+ARG DISABLE_LOGS=true
+ARG GC_TON_NODE=master
+
 FROM rust:1.50.0-buster
 
-WORKDIR /usr/src
+ARG DISABLE_LOGS
+ARG GC_TON_NODE
 
-ENV TON_LABS_NODE_COMMIT=master
+WORKDIR /usr/src
 
 RUN apt-get update && apt-get install -y clang
 RUN git clone --recurse-submodules https://github.com/tonlabs/ton-labs-node.git \
     && cd ton-labs-node \
-    && git checkout ${TON_LABS_NODE_COMMIT} \
+    && git checkout ${GC_TON_NODE} \
     && sed -i 's/127\.0\.0\.1/0.0.0.0/g' src/config.rs \
+    && if [ ${DISABLE_LOGS} = true ]; \
+        then sed -i -E 's/log = "(.+)"/log = { version = "\1", features = ["release_max_level_off"] }/g' Cargo.toml; \
+        else true; fi \
     && cargo update \
     && cargo build --release
 RUN git clone --recurse-submodules https://github.com/tonlabs/ton-labs-node-tools.git \
@@ -17,6 +24,10 @@ RUN git clone --recurse-submodules https://github.com/tonlabs/ton-labs-node-tool
     && cargo build --release
 
 FROM debian:buster-slim
+
+ARG GC_TON_NODE
+
+ENV GC_TON_NODE=${GC_TON_NODE}
 
 COPY --from=0 \
     /usr/src/ton-labs-node/target/release/ton_node \
