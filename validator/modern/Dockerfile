@@ -1,14 +1,15 @@
 ARG DISABLE_LOGS=true
 ARG GC_TON_NODE=master
 
-FROM rust:1.50.0-buster
+FROM rust:1.51.0-buster
 
 ARG DISABLE_LOGS
 ARG GC_TON_NODE
 
 WORKDIR /usr/src
 
-RUN apt-get update && apt-get install -y clang
+RUN apt-get update && apt-get install -y clang libzstd-dev
+ENV ZSTD_LIB_DIR=/usr/lib/x86_64-linux-gnu
 RUN git clone --recurse-submodules https://github.com/tonlabs/ton-labs-node.git \
     && cd ton-labs-node \
     && git checkout ${GC_TON_NODE} \
@@ -17,7 +18,7 @@ RUN git clone --recurse-submodules https://github.com/tonlabs/ton-labs-node.git 
         then sed -i -E 's/log = "(.+)"/log = { version = "\1", features = ["release_max_level_off"] }/g' Cargo.toml; \
         else true; fi \
     && cargo update \
-    && cargo build --release
+    && cargo build --release --features "metrics,compression"
 RUN git clone --recurse-submodules https://github.com/tonlabs/ton-labs-node-tools.git \
     && cd ton-labs-node-tools \
     && cargo update \

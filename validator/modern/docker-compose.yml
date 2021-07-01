@@ -4,6 +4,8 @@ services:
     build: .
     environment:
       CONSOLE_PORT:
+      STATSD_DOMAIN:
+      STATSD_PORT:
     volumes:
       - type: volume
         source: freeton-rnode-data
@@ -12,8 +14,9 @@ services:
       - "${ADNL_PORT}:${ADNL_PORT}/udp"
       - "${CONSOLE_PORT}:${CONSOLE_PORT}"
     mem_limit: "${MEM_LIMIT}"
+    memswap_limit: "${MEM_LIMIT}" # disables swap usage
     restart: always
-  
+
   statsd:
     image: statsd/statsd
     volumes:
