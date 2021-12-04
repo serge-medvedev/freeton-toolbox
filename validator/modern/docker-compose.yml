@@ -8,6 +8,9 @@ services:
       STATSD_PORT:
     volumes:
       - type: volume
+        source: freeton-rnode-config
+        target: /etc/ton
+      - type: volume
         source: freeton-rnode-data
         target: /node_db
     ports:
@@ -27,5 +30,6 @@ services:
     restart: always
 
 volumes:
+  freeton-rnode-config:
   freeton-rnode-data:
 
