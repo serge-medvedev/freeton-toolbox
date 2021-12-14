@@ -1,17 +1,18 @@
 version: "2.4"
 services:
   node:
-    build: .
+    build: node
     environment:
+      ADNL_PORT:
       CONSOLE_PORT:
       STATSD_DOMAIN:
       STATSD_PORT:
     volumes:
       - type: volume
-        source: freeton-rnode-config
+        source: node-config
         target: /etc/ton
       - type: volume
-        source: freeton-rnode-data
+        source: node-data
         target: /node_db
     ports:
       - "${ADNL_PORT}:${ADNL_PORT}/udp"
@@ -30,6 +31,6 @@ services:
     restart: always
 
 volumes:
-  freeton-rnode-config:
-  freeton-rnode-data:
+  node-config:
+  node-data:
 

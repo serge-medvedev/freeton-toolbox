@@ -1,30 +1,29 @@
 ARG DISABLE_LOGS=true
 ARG GC_TON_NODE=master
 
-FROM rust:1.51.0-buster
+FROM rust:1.53.0-bullseye
 
-ARG DISABLE_LOGS
 ARG GC_TON_NODE
 
 WORKDIR /usr/src
 
-RUN apt-get update && apt-get install -y clang libzstd-dev
+RUN apt-get update && apt-get install -y clang libzstd-dev libgoogle-perftools-dev
 ENV ZSTD_LIB_DIR=/usr/lib/x86_64-linux-gnu
 RUN git clone --recurse-submodules https://github.com/tonlabs/ton-labs-node.git \
     && cd ton-labs-node \
-    && git checkout ${GC_TON_NODE} \
+    && git checkout -b build ${GC_TON_NODE} \
     && sed -i 's/127\.0\.0\.1/0.0.0.0/g' src/config.rs \
     && if [ ${DISABLE_LOGS} = true ]; \
         then sed -i -E 's/log = "(.+)"/log = { version = "\1", features = ["release_max_level_off"] }/g' Cargo.toml; \
         else true; fi \
     && cargo update \
-    && cargo build --release --features "metrics,compression"
+    && cargo build --release --features "metrics"
 RUN git clone --recurse-submodules https://github.com/tonlabs/ton-labs-node-tools.git \
     && cd ton-labs-node-tools \
     && cargo update \
     && cargo build --release
 
-FROM debian:buster-slim
+FROM debian:bullseye-slim
 
 ARG GC_TON_NODE
 
@@ -43,11 +42,13 @@ COPY --from=0 \
 RUN apt-get update && apt-get install -y \
     ca-certificates \
     libssl1.1 \
+    libgoogle-perftools4 \
     curl \
     jq
 
 WORKDIR /etc/ton
 
+COPY log_cfg.yml default_config.json ./
 COPY entrypoint.sh /
 
 ENTRYPOINT /entrypoint.sh

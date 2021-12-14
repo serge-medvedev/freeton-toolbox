@@ -6,7 +6,7 @@ Everything about deployment here is pretty straightforward:
 
 Docker's multi-stage build is being utilized to make resulting image small in size.
 Sources are pulled from `master` branch by default.
-There's a code-modification trick being applied to allow the `console` CLI tool to connect to the node remotely (see the [Dockerfile](./Dockerfile) for details).
+There's a code-modification trick being applied to allow the `console` CLI tool to connect to the node remotely (see the [Dockerfile](./node/Dockerfile) for details).
 
 Deployment assumes Docker Compose usage.
 There are few variables to set up &mdash; see [.env](.env) for details.

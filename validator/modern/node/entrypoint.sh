@@ -1,26 +1,22 @@
-#!/bin/bash -eE
+#!/bin/bash
+
+set -eo pipefail
 
 CONFIGS_DIR='/etc/ton'
 LOGS_DIR='/var/log/ton'
 WORKING_DIR='/'
-RUSTNET_TON_DEV_COMMIT=${RUSTNET_TON_DEV_COMMIT:-main}
+MAIN_TON_DEV_COMMIT=${MAIN_TON_DEV_COMMIT:-master}
 
 mkdir -p "$CONFIGS_DIR" "$LOGS_DIR"
 
 function configure() {
-    curl -sS "https://raw.githubusercontent.com/tonlabs/rustnet.ton.dev/$RUSTNET_TON_DEV_COMMIT/docker-compose/ton-node/configs/log_cfg.yml" \
-        -o "$CONFIGS_DIR/log_cfg.yml"
-
-    sed -i "s|/ton-node/logs|$LOGS_DIR|g" "$CONFIGS_DIR/log_cfg.yml"
-
-    curl -sS "https://raw.githubusercontent.com/tonlabs/rustnet.ton.dev/$RUSTNET_TON_DEV_COMMIT/docker-compose/ton-node/configs/default_config.json" \
-        -o "$CONFIGS_DIR/default_config.json"
-
     DEFAULT_CONFIG_JSON=$(mktemp)
-    jq --argjson cport "$CONSOLE_PORT" '.control_server_port = $cport' "$CONFIGS_DIR/default_config.json" > "$DEFAULT_CONFIG_JSON" \
+    jq --argjson cport "$CONSOLE_PORT" --arg ipaddr "$(printf '0.0.0.0:%u' "$ADNL_PORT")" \
+        '.control_server_port = $cport | .ip_address = $ipaddr' \
+        "$CONFIGS_DIR/default_config.json" > "$DEFAULT_CONFIG_JSON" \
         && mv "$DEFAULT_CONFIG_JSON" "$CONFIGS_DIR/default_config.json"
 
-    curl -sS "https://raw.githubusercontent.com/tonlabs/rustnet.ton.dev/$RUSTNET_TON_DEV_COMMIT/configs/ton-global.config.json" \
+    curl -sS "https://raw.githubusercontent.com/tonlabs/main.ton.dev/$MAIN_TON_DEV_COMMIT/configs/ton-global.config.json" \
         -o "$CONFIGS_DIR/ton-global.config.json"
 }
 
