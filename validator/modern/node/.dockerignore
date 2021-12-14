@@ -1,7 +1,2 @@
 .dockerignore
-.env
-docker-compose.yml
 Dockerfile
-
-statsd/
-
