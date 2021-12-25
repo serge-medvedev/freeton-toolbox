@@ -5,8 +5,6 @@ services:
     environment:
       ADNL_PORT:
       CONSOLE_PORT:
-      STATSD_DOMAIN:
-      STATSD_PORT:
     volumes:
       - type: volume
         source: node-config
@@ -19,15 +17,6 @@ services:
       - "${CONSOLE_PORT}:${CONSOLE_PORT}"
     mem_limit: "${MEM_LIMIT}"
     memswap_limit: "${MEM_LIMIT}" # disables swap usage
-    restart: always
-
-  statsd:
-    image: statsd/statsd
-    volumes:
-      - type: bind
-        source: ./statsd/statsd-mapping.yaml
-        target: /statsd-mappings/statsd-mapping.yaml
-        read_only: true
     restart: always
 
 volumes:

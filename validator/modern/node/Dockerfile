@@ -17,7 +17,7 @@ RUN git clone --recurse-submodules https://github.com/tonlabs/ton-labs-node.git 
         then sed -i -E 's/log = "(.+)"/log = { version = "\1", features = ["release_max_level_off"] }/g' Cargo.toml; \
         else true; fi \
     && cargo update \
-    && cargo build --release --features "metrics"
+    && cargo build --release
 RUN git clone --recurse-submodules https://github.com/tonlabs/ton-labs-node-tools.git \
     && cd ton-labs-node-tools \
     && cargo update \
