@@ -1,3 +1,5 @@
+# [REPO IS ARCHIVED] Re-structured and maintained version lives [here](https://github.com/everscale-tools/dockerfiles)
+
 # FreeTON Toolbox
 
 ## What is it good for?
