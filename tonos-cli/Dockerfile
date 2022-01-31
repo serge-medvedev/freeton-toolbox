@@ -1,6 +1,6 @@
 ARG RUST_VERSION=1
 
-FROM rust:$RUST_VERSION-buster
+FROM rust:$RUST_VERSION-bullseye
 
 ARG TONOS_CLI_VERSION
 ENV TONOS_CLI_REPO_REF=${TONOS_CLI_VERSION:+tags/v$TONOS_CLI_VERSION}
@@ -13,7 +13,7 @@ RUN git clone --recurse-submodules https://github.com/tonlabs/tonos-cli.git \
 
 RUN git clone https://github.com/tonlabs/ton-labs-contracts.git
 
-FROM debian:buster-slim
+FROM debian:bullseye-slim
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
     libssl1.1 \

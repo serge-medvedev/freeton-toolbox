@@ -1,7 +1,6 @@
-ARG DISABLE_LOGS=true
 ARG GC_TON_NODE=master
 
-FROM rust:1.53.0-bullseye
+FROM rust:1.58.0-bullseye
 
 ARG GC_TON_NODE
 
@@ -13,9 +12,7 @@ RUN git clone --recurse-submodules https://github.com/tonlabs/ton-labs-node.git 
     && cd ton-labs-node \
     && git checkout -b build ${GC_TON_NODE} \
     && sed -i 's/127\.0\.0\.1/0.0.0.0/g' src/config.rs \
-    && if [ ${DISABLE_LOGS} = true ]; \
-        then sed -i -E 's/log = "(.+)"/log = { version = "\1", features = ["release_max_level_off"] }/g' Cargo.toml; \
-        else true; fi \
+    && sed -i -E 's/log = "(.+)"/log = { version = "\1", features = ["release_max_level_off"] }/g' Cargo.toml \
     && cargo update \
     && cargo build --release
 RUN git clone --recurse-submodules https://github.com/tonlabs/ton-labs-node-tools.git \
